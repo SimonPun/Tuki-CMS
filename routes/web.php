@@ -1,96 +1,96 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\VacancyController;
+use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ApplicantsController;
-use App\Http\Controllers\Admin\EmployeeController;
-use App\Http\Controllers\Admin\TaskController;
+use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\User\UserDashboardController;
+use App\Http\Controllers\Employee\DailyActivitiesController;
 use App\Http\Controllers\Employee\Auth\EmployeeAuthController;
-use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\Admin\VacancyController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Employee\EmployeeDashboardController;
 
-
-
-
+// Admin Login Routes
 Route::prefix('admin')->group(function () {
     Route::middleware(['guest:admin'])->group(function () {
-        // Admin Login Routes
         Route::get('/login', [LoginController::class, 'index'])->name('admin.auth.login');
         Route::post('/login', [LoginController::class, 'login'])->name('admin.login');
-        Route::middleware(['auth:admin'])->group(function () {
-            // Admin Logout Route
+    });
+
+    Route::middleware(['auth:admin'])->group(function () {
+        Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
+        // Employee Routes
+        Route::prefix('employee')->name('admin.')->group(function () {
+            Route::get('/list', [EmployeeController::class, 'index'])->name('employee.list');
+            Route::get('/add', [EmployeeController::class, 'add'])->name('employee.add');
+            Route::post('/create', [EmployeeController::class, 'create'])->name('employee.create');
+            Route::post('/delete', [EmployeeController::class, 'delete'])->name('employee.delete');
+            Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('employee.edit');
+            Route::post('/update', [EmployeeController::class, 'update'])->name('employee.update');
+            Route::get('/show/{id}', [EmployeeController::class, 'show'])->name('employee.show');
+        });
+
+        // Task Routes
+        Route::prefix('tasks')->name('admin.task.')->group(function () {
+            Route::get('/list', [TaskController::class, 'index'])->name('list');
+            Route::get('/add', [TaskController::class, 'add'])->name('add');
+            Route::post('/create', [TaskController::class, 'create'])->name('create');
+            Route::post('/delete', [TaskController::class, 'delete'])->name('delete');
+            Route::get('/edit/{id}', [TaskController::class, 'edit'])->name('edit');
+            Route::post('/update', [TaskController::class, 'update'])->name('update');
+        });
+
+        // Vacancy Routes
+        Route::prefix('vacancies')->name('admin.vacancy.')->group(function () {
+            Route::get('/', [VacancyController::class, 'index'])->name('list');
+            Route::get('/create', [VacancyController::class, 'add'])->name('create');
+            Route::post('/', [VacancyController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [VacancyController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [VacancyController::class, 'update'])->name('update');
+            Route::delete('/{id}', [VacancyController::class, 'delete'])->name('delete');
+        });
+
+        // Applicants Routes
+        Route::prefix('applicants')->name('admin.applicants.')->group(function () {
+            Route::get('/', [ApplicantsController::class, 'index'])->name('index');
+            Route::get('/create', [ApplicantsController::class, 'create'])->name('create');
+            Route::post('/store', [ApplicantsController::class, 'store'])->name('store');
+            Route::delete('/{id}/delete', [ApplicantsController::class, 'destroy'])->name('destroy');
+        });
+
+        // Admin CRUD Routes
+        Route::prefix('admin')->name('admin.admin.')->group(function () {
+            Route::get('/list', [AdminController::class, 'index'])->name('list');
+            Route::get('/add', [AdminController::class, 'add'])->name('add');
+            Route::post('/store', [AdminController::class, 'store'])->name('store');
+            Route::post('/delete', [AdminController::class, 'delete'])->name('delete');
+            Route::get('/edit/{id}', [AdminController::class, 'edit'])->name('edit');
+            Route::post('/update', [AdminController::class, 'update'])->name('update');
         });
     });
-    Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 });
 
-//user login
 // Employee Login Routes
-
 Route::prefix('employee')->group(function () {
     Route::get('login', [EmployeeAuthController::class, 'showLoginForm'])->name('employee.login');
     Route::post('login', [EmployeeAuthController::class, 'login']);
     Route::post('logout', [EmployeeAuthController::class, 'logout'])->name('employee.logout');
 
-    Route::middleware(['auth:employee'])->group(function () {
-        Route::view('dashboard', 'employee.userdashboard')->name('employee.dashboard');
-    });
+    Route::middleware('auth:employee')->group(function () {
+        // Daily Activities Routes
+        Route::get('dailyactivities', [DailyActivitiesController::class, 'index'])->name('dailyactivities.index');
+        Route::get('dailyactivities/create', [DailyActivitiesController::class, 'create'])->name('dailyactivities.create');
+        Route::post('dailyactivities', [DailyActivitiesController::class, 'store'])->name('dailyactivities.store');
+        Route::get('dailyactivities/{id}/edit', [DailyActivitiesController::class, 'edit'])->name('dailyactivities.edit');
+        Route::put('dailyactivities/{id}', [DailyActivitiesController::class, 'update'])->name('dailyactivities.update');
+        Route::delete('dailyactivities/{id}', [DailyActivitiesController::class, 'destroy'])->name('dailyactivities.destroy');
 
-    // Other employee routes...
-});
-
-Route::middleware(['auth:admin'])->group(function () {
-    Route::prefix('admin')->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-
-        // employee routes
-        Route::prefix('admin')->name('admin.')->group(function () {
-            Route::get('/employee/list', [EmployeeController::class, 'index'])->name('employee.list');
-            Route::get('/employee/add', [EmployeeController::class, 'add'])->name('employee.add');
-            Route::post('/employee/create', [EmployeeController::class, 'create'])->name('employee.create');
-            Route::post('/employee/delete', [EmployeeController::class, 'delete'])->name('employee.delete');
-            Route::get('/employee/edit/{id}', [EmployeeController::class, 'edit'])->name('employee.edit');
-            Route::post('/employee/update', [EmployeeController::class, 'update'])->name('employee.update');
-            Route::get('/employee/show/{id}', [EmployeeController::class, 'show'])->name('employee.show');
-        });
-
-        // Task routes
-        Route::get('/tasks/list', [TaskController::class, 'index'])->name('admin.task.list');
-        Route::get('/tasks/add', [TaskController::class, 'add'])->name('admin.task.add');
-        Route::post('/tasks/create', [TaskController::class, 'create'])->name('admin.task.create');
-        Route::post('/tasks/delete', [TaskController::class, 'delete'])->name('admin.task.delete');
-        Route::get('/tasks/edit/{id}', [TaskController::class, 'edit'])->name('admin.task.edit');
-        Route::post('/tasks/update', [TaskController::class, 'update'])->name('admin.task.update');
-
-
-        // Vacancy routes
-        Route::prefix('admin')->name('admin.')->group(function () {
-            Route::get('vacancies', [VacancyController::class, 'index'])->name('vacancy.list');
-            Route::get('vacancies/create', [VacancyController::class, 'add'])->name('vacancy.create');
-            Route::post('vacancies', [VacancyController::class, 'store'])->name('vacancy.store');
-            Route::get('vacancies/{id}/edit', [VacancyController::class, 'edit'])->name('vacancy.edit');
-            Route::put('vacancies/{id}', [VacancyController::class, 'update'])->name('vacancy.update');
-            Route::delete('vacancies/{id}', [VacancyController::class, 'delete'])->name('vacancy.delete');
-        });
-
-        // // For Applicants list
-
-        Route::prefix('admin')->group(function () {
-            Route::get('/applicants', [ApplicantsController::class, 'index'])->name('admin.applicants.index');
-            Route::get('/applicants/create', [ApplicantsController::class, 'create'])->name('admin.applicants.create');
-            Route::post('/applicants/store', [ApplicantsController::class, 'store'])->name('admin.applicants.store');
-            Route::delete('/applicants/{id}/delete', [ApplicantsController::class, 'destroy'])->name('admin.applicants.destroy');
-        });
-
-        // Admin Crud
-
-        Route::get('/admin/list', [AdminController::class, 'index'])->name('admin.admin.list');
-        Route::get('/admin/add', [AdminController::class, 'add'])->name('admin.admin.add');
-        Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.admin.store');
-        Route::post('/admin/delete', [AdminController::class, 'delete'])->name('admin.admin.delete');
-        Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])->name('admin.admin.edit');
-        Route::post('/admin/update', [AdminController::class, 'update'])->name('admin.admin.update');
+        // Dashboard Route
+        Route::get('dashboard', [EmployeeDashboardController::class, 'index'])->name('employee.dashboard');
     });
 });

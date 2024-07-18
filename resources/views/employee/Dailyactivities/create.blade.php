@@ -1,4 +1,4 @@
-@extends('user.layouts.userapp')
+@extends('employee.layouts.userapp')
 
 @section('title')
     Add Daily Activity
@@ -9,19 +9,25 @@
         <div class="app-main__inner">
             <div class="row justify-content-center">
                 <div class="col-md-12">
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
                     <div class="card">
                         <div class="card-header">Add Daily Activity</div>
 
                         <div class="card-body">
                             <form method="POST" action="{{ route('dailyactivities.store') }}" enctype="multipart/form-data">
                                 @csrf
-                                <input type="hidden" name="employee_id" value="{{ Auth::user()->id }}">
+                                <input type="hidden" name="employee_id" value="{{ Auth::guard('employee')->user()->id }}">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="title">Title</label>
                                             <input id="title" type="text"
-                                                class="form-control @error('title') is-invalid @enderror" name  ="title"
+                                                class="form-control @error('title') is-invalid @enderror" name="title"
                                                 value="{{ old('title') }}" autofocus>
                                             @error('title')
                                                 <span class="invalid-feedback" role="alert">
@@ -73,7 +79,8 @@
                                             <select id="work_status"
                                                 class="form-control @error('work_status') is-invalid @enderror"
                                                 name="work_status">
-                                                <option value="0" {{ old('work_status') == '0' ? 'selected' : '' }}>Not
+                                                <option value="0" {{ old('work_status') == '0' ? 'selected' : '' }}>
+                                                    Not
                                                     Started</option>
                                                 <option value="1" {{ old('work_status') == '1' ? 'selected' : '' }}>In
                                                     Progress</option>

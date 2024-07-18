@@ -64,7 +64,7 @@
                                             <img class="rounded-circle"
                                                 src="{{ asset('assets/images/avatars/11.svg') }}" alt=""
                                                 style="width: 40px; height: 40px;">
-                                            {{-- <span class="ml-2">Hello, {{ auth()->user()->name }}</span> --}}
+                                            <span class="ml-2">Hello, {{ auth('employee')->user()->name }}</span>
                                             <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                         </a>
 
@@ -136,19 +136,21 @@
 
                                 <ul class="mm-collapse">
                                     <li>
-                                        <a href=""
-                                            class="{{ Request::is('user/dailyactivities') ? 'mm-active' : '' }}">
+                                        <a href="{{ route('dailyactivities.index') }}"
+                                            class="{{ Request::is('user/dailyactivities*') ? 'mm-active' : '' }}">
                                             <i class="metismenu-icon pe-7s-rocket"></i>
                                             List
                                         </a>
+
                                     </li>
                                     <li>
-                                        <a href=""
+                                        <a href="{{ route('dailyactivities.create') }}"
                                             class="{{ Request::is('user/dailyactivities/create') ? 'mm-active' : '' }}">
                                             <i class="metismenu-icon pe-7s-rocket"></i>
                                             Add New
                                         </a>
                                     </li>
+
                                 </ul>
                             </li>
 
