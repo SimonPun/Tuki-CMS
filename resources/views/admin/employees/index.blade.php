@@ -16,6 +16,7 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>Image</th> <!-- New column for Image -->
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Position</th>
@@ -26,6 +27,13 @@
                                     @foreach ($employees as $employee)
                                         <tr>
                                             <td>{{ $employee->id }}</td>
+                                            <td>
+                                                <div class="widget-content-left">
+                                                    <img width="40" class="rounded-circle"
+                                                        src="{{ asset('storage/' . $employee->image) }}"
+                                                        alt="{{ $employee->name }}">
+                                                </div>
+                                            </td>
                                             <td>{{ $employee->name }}</td>
                                             <td>{{ $employee->email }}</td>
                                             <td>{{ $employee->position }}</td>

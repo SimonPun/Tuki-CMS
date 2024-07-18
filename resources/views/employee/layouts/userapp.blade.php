@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>TukiSoft- @yield('title')</title>
+    <title>TukiSoft - @yield('title')</title>
     <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <meta name="description" content="This is an example dashboard created using build-in elements and components.">
@@ -14,7 +14,6 @@
     <link href="{{ asset('main.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
     <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
-
 </head>
 
 <body>
@@ -27,8 +26,6 @@
                             style="height: 23px; width: auto;">
                     </a>
                 </div>
-
-
                 <div class="header__pane ml-auto">
                     <div>
                         <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
@@ -61,26 +58,27 @@
                                     <div class="btn-group">
                                         <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                             class="p-0 btn">
-                                            <img class="rounded-circle"
-                                                src="{{ asset('assets/images/avatars/11.svg') }}" alt=""
-                                                style="width: 40px; height: 40px;">
+                                            @if (auth('employee')->check() && auth('employee')->user()->image)
+                                                <img class="rounded-circle"
+                                                    src="{{ asset('storage/' . auth('employee')->user()->image) }}"
+                                                    alt="User Image" style="width: 40px; height: 40px;">
+                                            @else
+                                                <img class="rounded-circle"
+                                                    src="{{ asset('assets/images/avatars/11.svg') }}" alt=""
+                                                    style="width: 40px; height: 40px;">
+                                            @endif
                                             <span class="ml-2">Hello, {{ auth('employee')->user()->name }}</span>
                                             <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                         </a>
-
-                                        <div tabindex="-1" role="menu" aria-hidden="true"
-                                            class="dropdown-menu dropdown-menu-right">
-                                            <button type="button" tabindex="0" class="dropdown-item">User
-                                                Account</button>
-
-
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a href="{{ route('employee.auth.accountsettings') }}"
+                                                class="dropdown-item">Account Setting</a>
                                             <form method="POST" action="{{ route('employee.logout') }}"
                                                 style="display: inline;">
                                                 @csrf
                                                 <button type="submit" class="dropdown-item"
                                                     tabindex="0">Logout</button>
                                             </form>
-
                                         </div>
                                     </div>
                                 </div>
@@ -89,7 +87,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="app-main">
             <div class="app-sidebar sidebar-shadow">
@@ -106,7 +103,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="app-header__menu">
                     <span>
                         <button type="button"
@@ -133,7 +129,6 @@
                                     Daily Activities
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                                 </a>
-
                                 <ul class="mm-collapse">
                                     <li>
                                         <a href="{{ route('dailyactivities.index') }}"
@@ -141,7 +136,6 @@
                                             <i class="metismenu-icon pe-7s-rocket"></i>
                                             List
                                         </a>
-
                                     </li>
                                     <li>
                                         <a href="{{ route('dailyactivities.create') }}"
@@ -150,10 +144,8 @@
                                             Add New
                                         </a>
                                     </li>
-
                                 </ul>
                             </li>
-
                         </ul>
                     </div>
                 </div>
@@ -166,7 +158,6 @@
     <script type="text/javascript" src="{{ asset('assets/scripts/main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('app.js') }}"></script>
     <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-
     @yield('footer')
 </body>
 

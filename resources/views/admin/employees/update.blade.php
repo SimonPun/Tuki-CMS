@@ -43,47 +43,10 @@
                                                     placeholder="Enter Position" type="text" class="form-control">
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="emp_start_date">Start Date</label>
-                                                <input name="start_date" value="{{ $employee->start_date }}"
-                                                    id="emp_start_date" placeholder="Enter Start Date" type="date"
-                                                    class="form-control">
-                                            </div>
-                                        </div>
+
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="emp_phone">Phone</label>
-                                                <input name="phone" value="{{ $employee->phone }}" id="emp_phone"
-                                                    placeholder="Enter Your Phone" type="text" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="emp_city">City</label>
-                                                <input name="city" value="{{ $employee->city }}" id="emp_city"
-                                                    placeholder="Enter Your City" type="text" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="emp_linkedin">LinkedIn</label>
-                                                <input name="linkedin" value="{{ $employee->linkedin }}" id="emp_linkedin"
-                                                    placeholder="Enter LinkedIn URL" type="url" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="emp_facebook">Facebook</label>
-                                                <input name="facebook" value="{{ $employee->facebook }}" id="emp_facebook"
-                                                    placeholder="Enter Facebook URL" type="url" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
+
+
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">

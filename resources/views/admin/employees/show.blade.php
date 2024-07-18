@@ -31,10 +31,32 @@
                                         <th>Email</th>
                                         <td>{{ $employee->email }}</td>
                                     </tr>
-
-
-
-
+                                    <tr>
+                                        <th>City</th>
+                                        <td>{{ $employee->city }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Facebook Profile</th>
+                                        <td>
+                                            @if ($employee->facebook)
+                                                <a href="{{ $employee->facebook }}"
+                                                    target="_blank">{{ $employee->facebook }}</a>
+                                            @else
+                                                N/A
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>LinkedIn Profile</th>
+                                        <td>
+                                            @if ($employee->linkedin)
+                                                <a href="{{ $employee->linkedin }}"
+                                                    target="_blank">{{ $employee->linkedin }}</a>
+                                            @else
+                                                N/A
+                                            @endif
+                                        </td>
+                                    </tr>
                                 </table>
                                 <a href="{{ route('admin.employee.edit', $employee->id) }}"
                                     class="btn btn-primary btn-lg">Edit Profile</a>

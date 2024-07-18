@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ApplicantsController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\User\UserDashboardController;
 use App\Http\Controllers\Employee\DailyActivitiesController;
+use App\Http\Controllers\Employee\Auth\EmployeeSettingsController;
 use App\Http\Controllers\Employee\Auth\EmployeeAuthController;
 use App\Http\Controllers\Employee\EmployeeDashboardController;
 
@@ -80,6 +81,13 @@ Route::prefix('employee')->group(function () {
     Route::get('login', [EmployeeAuthController::class, 'showLoginForm'])->name('employee.login');
     Route::post('login', [EmployeeAuthController::class, 'login']);
     Route::post('logout', [EmployeeAuthController::class, 'logout'])->name('employee.logout');
+
+    Route::middleware('auth:employee')->group(function () {
+        Route::get('account-settings', [EmployeeSettingsController::class, 'edit'])->name('employee.auth.accountsettings');
+        Route::put('account-settings', [EmployeeSettingsController::class, 'update'])->name('employee.auth.accountsettings.update');
+    });
+
+
 
     Route::middleware('auth:employee')->group(function () {
         // Daily Activities Routes

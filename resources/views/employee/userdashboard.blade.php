@@ -10,11 +10,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="main-card mb-3 card">
-                        <div class="card-header"> Activities
+                        <div class="card-header">Your Activities
                             <div class="btn-actions-pane-right">
-                                <div role="group" class="btn-group-sm btn-group">
-                                    <a href="{{ route('admin.employee.add') }}" class="btn btn-focus">Add</a>
-                                </div>
+
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -26,10 +24,6 @@
                                         <th>check_in</th>
                                         <th>checkout</th>
                                         <th>work_status</th>
-                                        <th>work_list</th>
-                                        <th>finished_work</th>
-                                        <th>remaining_work</th>
-                                        <th>file</th>
 
                                         <th class="text-center">Actions</th>
                                     </tr>

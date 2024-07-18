@@ -29,7 +29,7 @@ class EmployeeController extends Controller
             'email' => 'required|email|unique:employees',
             'position' => 'required|string',
             'password' => 'required|min:8',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust image validation as needed
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validation->fails()) {
