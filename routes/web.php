@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ApplicantsController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\TaskController;
+use App\Http\Controllers\Employee\Auth\EmployeeAuthController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Admin\VacancyController;
 use Illuminate\Support\Facades\Route;
@@ -26,14 +27,19 @@ Route::prefix('admin')->group(function () {
 });
 
 //user login
+// Employee Login Routes
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+Route::prefix('employee')->group(function () {
+    Route::get('login', [EmployeeAuthController::class, 'showLoginForm'])->name('employee.login');
+    Route::post('login', [EmployeeAuthController::class, 'login']);
+    Route::post('logout', [EmployeeAuthController::class, 'logout'])->name('employee.logout');
+
+    Route::middleware(['auth:employee'])->group(function () {
+        Route::view('dashboard', 'employee.userdashboard')->name('employee.dashboard');
+    });
+
+    // Other employee routes...
 });
-
-
 
 Route::middleware(['auth:admin'])->group(function () {
     Route::prefix('admin')->group(function () {

@@ -114,10 +114,11 @@ class EmployeeController extends Controller
 
     public function delete(Request $request)
     {
+        // Find the employee by ID or fail
         $employee = Employee::findOrFail($request->id);
 
         // Delete the employee image from storage
-        $path = public_path('storage\\' . $employee->image);
+        $path = public_path('storage/' . $employee->image);
         if (File::exists($path)) {
             File::delete($path);
         }
@@ -125,10 +126,8 @@ class EmployeeController extends Controller
         // Delete the employee record
         $employee->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Employee deleted successfully'
-        ]);
+        // Redirect to the index page with a success message
+        return redirect()->route('admin.employee.list')->with('success', 'Employee deleted successfully');
     }
 
     public function show($id)

@@ -22,7 +22,7 @@
         <div class="app-header header-shadow">
             <div class="app-header__logo">
                 <div class="app-header__logo">
-                    <a href="{{ route('userdashboard') }}">
+                    <a href="">
                         <img src="{{ asset('assets/images/tuki_logo.png') }}" alt="Logo"
                             style="height: 23px; width: auto;">
                     </a>
@@ -64,7 +64,7 @@
                                             <img class="rounded-circle"
                                                 src="{{ asset('assets/images/avatars/11.svg') }}" alt=""
                                                 style="width: 40px; height: 40px;">
-                                            <span class="ml-2">Hello, {{ auth()->user()->name }}</span>
+                                            {{-- <span class="ml-2">Hello, {{ auth()->user()->name }}</span> --}}
                                             <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                         </a>
 
@@ -74,7 +74,7 @@
                                                 Account</button>
 
 
-                                            <form method="POST" action="{{ route('logout') }}"
+                                            <form method="POST" action="{{ route('employee.logout') }}"
                                                 style="display: inline;">
                                                 @csrf
                                                 <button type="submit" class="dropdown-item"
@@ -120,7 +120,7 @@
                 <div class="scrollbar-sidebar">
                     <div class="app-sidebar__inner">
                         <ul class="vertical-nav-menu">
-                            <li class="app-sidebar__heading">User Dashboards</li>
+                            <li class="app-sidebar__heading">Employee Dashboards</li>
                             <li>
                                 <a href="" class="mm-active">
                                     <i class="metismenu-icon pe-7s-photo-gallery"></i>
@@ -136,14 +136,14 @@
 
                                 <ul class="mm-collapse">
                                     <li>
-                                        <a href="{{ route('dailyactivities.index') }}"
+                                        <a href=""
                                             class="{{ Request::is('user/dailyactivities') ? 'mm-active' : '' }}">
                                             <i class="metismenu-icon pe-7s-rocket"></i>
                                             List
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('dailyactivities.create') }}"
+                                        <a href=""
                                             class="{{ Request::is('user/dailyactivities/create') ? 'mm-active' : '' }}">
                                             <i class="metismenu-icon pe-7s-rocket"></i>
                                             Add New
