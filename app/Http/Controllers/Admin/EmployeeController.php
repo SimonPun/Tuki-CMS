@@ -1,0 +1,139 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Employee;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
+class EmployeeController extends Controller
+{
+    public function index()
+    {
+        $employees = Employee::latest()->get();
+        return view('admin.employees.index', compact('employees'));
+    }
+
+    public function add()
+    {
+        return view('admin.employees.create');
+    }
+
+    public function create(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:employees',
+            'position' => 'required|string',
+            'password' => 'required|min:8',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust image validation as needed
+        ]);
+
+        if ($validation->fails()) {
+            return back()->withErrors($validation)->withInput();
+        }
+
+        $employee = new Employee;
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $filename = $request->file('image')->store('employee', 'public');
+            $employee->image = $filename;
+        }
+
+        // Set other employee data
+        $employee->name = $request->name;
+        $employee->email = $request->email;
+        $employee->position = $request->position;
+        $employee->password = Hash::make($request->password); // Hash the password
+
+        // Save the employee
+        $employee->save();
+
+        return redirect()->route('admin.employee.list')->with([
+            'success' => true,
+            'message' => 'Employee created successfully'
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $employee = Employee::findOrFail($id);
+        return view('admin.employees.update', compact('employee'));
+    }
+
+    public function update(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'id' => 'required|exists:employees,id',
+            'name' => 'required',
+            'email' => 'required|email|unique:employees,email,' . $request->id,
+            'position' => 'required|string',
+            'password' => 'nullable|min:8',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust image validation as needed
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validation->errors()->all()
+            ]);
+        } else {
+            $employee = Employee::findOrFail($request->id);
+
+            // Handle image update
+            if ($request->hasFile('image')) {
+                $path = public_path('storage\\' . $employee->image);
+                if (File::exists($path)) {
+                    File::delete($path);
+                }
+                $filename = $request->file('image')->store('employee', 'public');
+                $employee->image = $filename;
+            }
+
+            // Update other employee data
+            $employee->name = $request->name;
+            $employee->email = $request->email;
+            $employee->position = $request->position;
+            if ($request->filled('password')) {
+                $employee->password = Hash::make($request->password); // Hash the password if provided
+            }
+
+            // Save the updated employee
+            $employee->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Employee updated successfully'
+            ]);
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        $employee = Employee::findOrFail($request->id);
+
+        // Delete the employee image from storage
+        $path = public_path('storage\\' . $employee->image);
+        if (File::exists($path)) {
+            File::delete($path);
+        }
+
+        // Delete the employee record
+        $employee->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Employee deleted successfully'
+        ]);
+    }
+
+    public function show($id)
+    {
+        $employee = Employee::findOrFail($id);
+        return view('admin.employees.show', compact('employee'));
+    }
+}
