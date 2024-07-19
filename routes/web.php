@@ -34,7 +34,7 @@ Route::prefix('admin')->group(function () {
             Route::get('/list', [EmployeeController::class, 'index'])->name('employee.list');
             Route::get('/add', [EmployeeController::class, 'add'])->name('employee.add');
             Route::post('/create', [EmployeeController::class, 'create'])->name('employee.create');
-            Route::post('/delete', [EmployeeController::class, 'delete'])->name('employee.delete');
+            Route::delete('/delete/{id}', [EmployeeController::class, 'delete'])->name('employee.delete');
             Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('employee.edit');
             Route::post('/update', [EmployeeController::class, 'update'])->name('employee.update');
             Route::get('/show/{id}', [EmployeeController::class, 'show'])->name('employee.show');

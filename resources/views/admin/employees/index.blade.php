@@ -39,8 +39,10 @@
                                             <td>{{ $employee->position }}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <form action="{{ route('admin.employee.delete') }}" method="POST">
+                                                    <form action="{{ route('admin.employee.delete', $employee->id) }}"
+                                                        method="POST">
                                                         @csrf
+                                                        @method('delete')
                                                         <input type="hidden" name="id" value="{{ $employee->id }}">
                                                         <button type="submit" class="btn btn-danger mr-2"
                                                             onclick="return confirm('Are you sure you want to delete this employee?')">Delete</button>

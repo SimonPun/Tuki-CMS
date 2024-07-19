@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\EmployeeCredentialsMail;
+use Illuminate\Support\Facades\Mail;
 
 class EmployeeController extends Controller
 {
@@ -53,6 +55,13 @@ class EmployeeController extends Controller
         // Save the employee
         $employee->save();
 
+        // Send email with credentials
+        Mail::to($employee->email)->send(new EmployeeCredentialsMail([
+            'name' => $employee->name,
+            'email' => $employee->email,
+            'password' => $request->password, // Send the plain password
+        ]));
+
         return redirect()->route('admin.employee.list')->with([
             'success' => true,
             'message' => 'Employee created successfully'
@@ -86,7 +95,7 @@ class EmployeeController extends Controller
 
             // Handle image update
             if ($request->hasFile('image')) {
-                $path = public_path('storage\\' . $employee->image);
+                $path = public_path('storage/' . $employee->image);
                 if (File::exists($path)) {
                     File::delete($path);
                 }
