@@ -21,10 +21,11 @@
         <div class="app-header header-shadow">
             <div class="app-header__logo">
                 <div class="app-header__logo">
-                    <a href="">
+                    <a href="{{ route('employee.dashboard') }}">
                         <img src="{{ asset('assets/images/tuki_logo.png') }}" alt="Logo"
                             style="height: 23px; width: auto;">
                     </a>
+
                 </div>
                 <div class="header__pane ml-auto">
                     <div>
@@ -118,7 +119,7 @@
                         <ul class="vertical-nav-menu">
                             <li class="app-sidebar__heading">Employee Dashboards</li>
                             <li>
-                                <a href="" class="mm-active">
+                                <a href="{{ route('employee.dashboard') }}" class="mm-active">
                                     <i class="metismenu-icon pe-7s-photo-gallery"></i>
                                     Dashboard
                                 </a>

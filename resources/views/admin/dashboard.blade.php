@@ -51,6 +51,9 @@
                                             <td class="text-center">
                                                 <a href="{{ route('admin.employee.show', ['id' => $item->id]) }}"
                                                     class="btn btn-primary btn-sm">Details</a>
+                                                <a href="{{ route('admin.employees.activities', ['id' => $item->id]) }}"
+                                                    class="btn btn-danger btn-sm">Activities</a>
+
                                             </td>
                                         </tr>
                                     @endforeach

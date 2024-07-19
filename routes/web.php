@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ApplicantsController;
 use App\Http\Controllers\Admin\Auth\LoginController;
-use App\Http\Controllers\User\UserDashboardController;
+use App\Http\Controllers\Admin\EmployeeActivitiesController; // Updated controller for activities
 use App\Http\Controllers\Employee\DailyActivitiesController;
 use App\Http\Controllers\Employee\Auth\EmployeeSettingsController;
 use App\Http\Controllers\Employee\Auth\EmployeeAuthController;
@@ -23,7 +23,11 @@ Route::prefix('admin')->group(function () {
 
     Route::middleware(['auth:admin'])->group(function () {
         Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout');
+
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
+        // Employee Activities Route
+        Route::get('employee/{id}/activities', [EmployeeActivitiesController::class, 'show'])->name('admin.employees.activities');
 
         // Employee Routes
         Route::prefix('employee')->name('admin.')->group(function () {
@@ -85,11 +89,8 @@ Route::prefix('employee')->group(function () {
     Route::middleware('auth:employee')->group(function () {
         Route::get('account-settings', [EmployeeSettingsController::class, 'edit'])->name('employee.auth.accountsettings');
         Route::put('account-settings', [EmployeeSettingsController::class, 'update'])->name('employee.auth.accountsettings.update');
-    });
+        Route::get('dailyactivities/{id}/download', [DailyActivitiesController::class, 'download'])->name('dailyactivities.download');
 
-
-
-    Route::middleware('auth:employee')->group(function () {
         // Daily Activities Routes
         Route::get('dailyactivities', [DailyActivitiesController::class, 'index'])->name('dailyactivities.index');
         Route::get('dailyactivities/create', [DailyActivitiesController::class, 'create'])->name('dailyactivities.create');

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DailyActivity;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class DailyActivitiesController extends Controller
 {
@@ -71,7 +72,7 @@ class DailyActivitiesController extends Controller
         }
 
         // Pass $activity to the view
-        return view('employee.dailyactivities.edit', compact('activity'));
+        return view('employee.dailyactivities.update', compact('activity'));
     }
 
     public function update(Request $request, $id)
@@ -106,6 +107,10 @@ class DailyActivitiesController extends Controller
         $dailyActivity->remaining_work = $request->input('remaining_work');
 
         if ($request->hasFile('file')) {
+            // Delete the old file if it exists
+            if ($dailyActivity->file && Storage::exists('public/' . $dailyActivity->file)) {
+                Storage::delete('public/' . $dailyActivity->file);
+            }
             $filePath = $request->file('file')->store('uploads', 'public');
             $dailyActivity->file = $filePath;
         }
@@ -125,9 +130,35 @@ class DailyActivitiesController extends Controller
             abort(403); // Unauthorized
         }
 
+        // Delete the file if it exists
+        if ($dailyActivity->file && Storage::exists('public/' . $dailyActivity->file)) {
+            Storage::delete('public/' . $dailyActivity->file);
+        }
+
         // Delete the daily activity
         $dailyActivity->delete();
 
         return redirect()->route('dailyactivities.index')->with('success', 'Daily activity deleted successfully.');
+    }
+
+    public function download($id)
+    {
+        // Find the daily activity by ID
+        $activity = DailyActivity::findOrFail($id);
+
+        // Ensure the user can only download their own activities
+        if ($activity->employee_id !== Auth::guard('employee')->user()->id) {
+            abort(403); // Unauthorized
+        }
+
+        // Check if the file exists and return it
+        if ($activity->file) {
+            $filePath = storage_path('app/public/' . $activity->file);
+            $fileName = basename($filePath);
+
+            return response()->download($filePath, $fileName);
+        }
+
+        return redirect()->back()->withErrors(['error' => 'File not found.']);
     }
 }
