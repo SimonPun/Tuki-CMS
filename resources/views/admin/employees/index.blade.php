@@ -7,16 +7,16 @@
         <div class="app-main__inner">
             <div class="container">
                 <div class="card">
-                    <div class="card-header">
-                        <h5>List of Employees</h5>
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">List of Employees</h5>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="list_employee" class="table" style="width:100%">
+                            <table id="list_employee" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Image</th> <!-- New column for Image -->
+                                        <th>Image</th>
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Position</th>
@@ -40,15 +40,15 @@
                                             <td>
                                                 <div class="d-flex">
                                                     <form action="{{ route('admin.employee.delete', $employee->id) }}"
-                                                        method="POST">
+                                                        method="POST" class="mr-2">
                                                         @csrf
                                                         @method('delete')
                                                         <input type="hidden" name="id" value="{{ $employee->id }}">
-                                                        <button type="submit" class="btn btn-danger mr-2"
+                                                        <button type="submit" class="btn btn-danger btn-sm"
                                                             onclick="return confirm('Are you sure you want to delete this employee?')">Delete</button>
                                                     </form>
                                                     <a href="{{ route('admin.employee.edit', ['id' => $employee->id]) }}"
-                                                        class="btn btn-primary">Edit</a>
+                                                        class="btn btn-primary btn-sm">Edit</a>
                                                 </div>
                                             </td>
                                         </tr>

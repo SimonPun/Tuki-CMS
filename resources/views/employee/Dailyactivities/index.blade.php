@@ -7,7 +7,7 @@
     <div class="app-main__outer">
         <div class="app-main__inner">
             <div class="card">
-                <div class="card-header">Daily Activities List</div>
+                <div class="card-header bg-primary text-white">Daily Activities List</div>
 
                 <div class="card-body">
                     @if ($activities->isEmpty())

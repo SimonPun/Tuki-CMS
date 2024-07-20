@@ -10,8 +10,8 @@
             <div class="container">
 
                 <div class="card">
-                    <div class="card-header">
-                        <h3>List of admin</h3>
+                    <div class="card-header bg-primary text-white">
+                        <h3>List of Admin</h3>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -25,20 +25,22 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                @foreach ($admins as $admin)
-                                    <tr>
-                                        <td>{{ $admin->id }}</td>
-                                        <td>{{ $admin->name }}</td>
-                                        <td>{{ $admin->email }}</td>
-                                        <td>{{ $admin->phone }}</td>
-                                        <td>
-                                            <button class="btn btn-danger" id="delete-admin"
-                                                data-id='{{ $admin->id }}'>Delete</button>
-                                            <a href="{{ route('admin.admin.edit', ['id' => $admin->id]) }}"
-                                                class="btn btn-primary">Edit</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                <tbody>
+                                    @foreach ($admins as $admin)
+                                        <tr>
+                                            <td>{{ $admin->id }}</td>
+                                            <td>{{ $admin->name }}</td>
+                                            <td>{{ $admin->email }}</td>
+                                            <td>{{ $admin->phone }}</td>
+                                            <td>
+                                                <button class="btn btn-danger" id="delete-admin"
+                                                    data-id="{{ $admin->id }}">Delete</button>
+                                                <a href="{{ route('admin.admin.edit', ['id' => $admin->id]) }}"
+                                                    class="btn btn-primary">Edit</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -47,6 +49,7 @@
         </div>
     </div>
 @endsection
+
 @section('footer')
     <script>
         $(document).ready(function() {
@@ -69,14 +72,13 @@
                     success: (data) => {
                         if (data.success == true) {
                             alert(data.message);
-                            window.location.href = "{{ route('admin.admin.list') }}"
+                            window.location.href = "{{ route('admin.admin.list') }}";
                         } else {
                             alert(data.message);
-
                         }
                     }
-                })
+                });
             }
-        })
+        });
     </script>
 @endsection

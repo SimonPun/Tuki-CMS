@@ -16,7 +16,7 @@
                     @endif
 
                     <div class="card">
-                        <div class="card-header">Add Daily Activity</div>
+                        <div class="card-header bg-primary text-white">Add Daily Activity</div>
 
                         <div class="card-body">
                             <form method="POST" action="{{ route('dailyactivities.store') }}" enctype="multipart/form-data">
@@ -80,8 +80,7 @@
                                                 class="form-control @error('work_status') is-invalid @enderror"
                                                 name="work_status">
                                                 <option value="0" {{ old('work_status') == '0' ? 'selected' : '' }}>
-                                                    Not
-                                                    Started</option>
+                                                    Not Started</option>
                                                 <option value="1" {{ old('work_status') == '1' ? 'selected' : '' }}>In
                                                     Progress</option>
                                                 <option value="2" {{ old('work_status') == '2' ? 'selected' : '' }}>

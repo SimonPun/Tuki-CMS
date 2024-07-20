@@ -9,10 +9,12 @@
         <div class="app-main__inner">
             <div class="container">
                 <div class="row d-flex justify-content-center">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="main-card mb-3 card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Add New Team Member</h5>
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title">Add New Team Member</h5>
                                 <form action="{{ route('admin.employee.create') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf

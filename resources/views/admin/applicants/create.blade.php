@@ -11,8 +11,10 @@
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-8">
                         <div class="main-card mb-3 card">
+                            <div class="card-header bg-primary text-white">
+                                <h3>Application Form</h3>
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title">Application Form</h5>
                                 <form action="{{ route('admin.applicants.store') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
@@ -36,7 +38,6 @@
                                         <label for="description">Description</label>
                                         <textarea class="form-control" id="description" name="description" rows="5"></textarea>
                                     </div>
-
 
                                     <div class="form-group">
                                         <label for="cv">Upload CV:</label>

@@ -22,23 +22,23 @@
                                     <div class="position-relative form-group">
                                         <label for="title" class="">Title</label>
                                         <input name="title" id="title" value="{{ $vacancy->title }}"
-                                            placeholder="Enter Your Title" type="text" class="form-control">
+                                            placeholder="Enter Your Title" type="text" class="form-control" required>
                                     </div>
 
                                     <div class="position-relative form-group">
                                         <label for="subtitle" class="">Subtitle</label>
                                         <input name="subtitle" id="subtitle" value="{{ $vacancy->subtitle }}"
-                                            placeholder="Enter Your Subtitle" type="text" class="form-control">
+                                            placeholder="Enter Your Subtitle" type="text" class="form-control" required>
                                     </div>
 
                                     <div class="position-relative form-group">
                                         <label for="description" class="">Description</label>
-                                        <textarea name="description" id="description" class="form-control" cols="30" rows="5">{{ $vacancy->description }}</textarea>
+                                        <textarea name="description" id="description" class="form-control" cols="30" rows="5" required>{{ $vacancy->description }}</textarea>
                                     </div>
 
                                     <div class="position-relative form-group">
                                         <label for="employment_type" class="">Employment Type</label>
-                                        <select name="employment_type" id="employment_type" class="form-control">
+                                        <select name="employment_type" id="employment_type" class="form-control" required>
                                             <option value="full-time"
                                                 {{ $vacancy->employment_type == 'full-time' ? 'selected' : '' }}>Full-Time
                                             </option>
@@ -49,6 +49,7 @@
                                     </div>
 
                                     <button type="submit" class="mt-1 btn btn-primary">Update</button>
+                                    <a href="{{ route('admin.vacancy.list') }}" class="btn btn-secondary mt-1">Cancel</a>
                                 </form>
                             </div>
                         </div>

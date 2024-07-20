@@ -10,13 +10,13 @@
             <div class="container">
 
                 <div class="card">
-                    <div class="card-header">
-                        <h3>List of tasks</h3>
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">List of Tasks</h3>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="list_tasks" class="table" style="width:100%">
-                                <thead>
+                            <table id="list_tasks" class="table table-striped" style="width:100%">
+                                <thead class="thead-light">
                                     <tr>
                                         <th>Id</th>
                                         <th>Name</th>
@@ -27,21 +27,24 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                @foreach ($tasks as $task)
-                                    <tr>
-                                        <td>{{ $task->id }}</td>
-                                        <td>{{ $task->employee->name }}</td>
-                                        <td>{{ $task->title }}</td>
-                                        <td>{{ $task->content }}</td>
-                                        <td>{{ $task->date }}</td>
-                                        <td>{{ $task->status == 1 ? 'Active' : 'Inactive' }}</td>
-                                        <td><button class="btn btn-danger" id="delete-task"
-                                                data-id='{{ $task->id }}'>Delete</button>
-                                            <a href="{{ route('admin.task.edit', ['id' => $task->id]) }}"
-                                                class="btn btn-primary">Edit</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                <tbody>
+                                    @foreach ($tasks as $task)
+                                        <tr>
+                                            <td>{{ $task->id }}</td>
+                                            <td>{{ $task->employee->name }}</td>
+                                            <td>{{ $task->title }}</td>
+                                            <td>{{ $task->content }}</td>
+                                            <td>{{ $task->date }}</td>
+                                            <td>{{ $task->status == 1 ? 'Active' : 'Inactive' }}</td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm" id="delete-task"
+                                                    data-id="{{ $task->id }}">Delete</button>
+                                                <a href="{{ route('admin.task.edit', ['id' => $task->id]) }}"
+                                                    class="btn btn-primary btn-sm">Edit</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -50,6 +53,7 @@
         </div>
     </div>
 @endsection
+
 @section('footer')
     <script>
         $(document).ready(function() {
@@ -72,14 +76,13 @@
                     success: (data) => {
                         if (data.success == true) {
                             alert(data.message);
-                            window.location.href = "{{ route('admin.task.list') }}"
+                            window.location.href = "{{ route('admin.task.list') }}";
                         } else {
                             alert(data.message);
-
                         }
                     }
-                })
+                });
             }
-        })
+        });
     </script>
 @endsection

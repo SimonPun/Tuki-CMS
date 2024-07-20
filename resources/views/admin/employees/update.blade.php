@@ -9,10 +9,12 @@
         <div class="app-main__inner">
             <div class="container">
                 <div class="row d-flex justify-content-center">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="main-card mb-3 card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Edit Team Member's Details</h5>
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title">Edit Team Member's Details</h5>
                                 <form class="" id="update_emp" method="POST"
                                     action="{{ route('admin.employee.update', ['id' => $employee->id]) }}"
                                     enctype="multipart/form-data">
@@ -43,10 +45,7 @@
                                                     placeholder="Enter Position" type="text" class="form-control">
                                             </div>
                                         </div>
-
                                     </div>
-
-
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -65,7 +64,6 @@
                                         </div>
                                     </div>
                                 </form>
-
                             </div>
                         </div>
                     </div>
@@ -96,7 +94,6 @@
                     }
                 }
             })
-
         })
     </script>
 @endsection
