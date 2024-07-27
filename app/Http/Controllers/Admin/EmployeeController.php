@@ -45,14 +45,14 @@ class EmployeeController extends Controller
             $filename = $request->file('image')->store('employee', 'public');
             $employee->image = $filename;
         } else {
-            $employee->image = 'images/dummy-image.jpg'; // Fallback to dummy image
+            $employee->image = 'assets/images/avatar.png'; // Fallback to default image
         }
 
         // Set other employee data
         $employee->name = $request->name;
         $employee->email = $request->email;
         $employee->position = $request->position;
-        $employee->password = Hash::make($request->password); // Hash the password
+        $employee->password = Hash::make($request->password);
 
         // Save the employee
         $employee->save();
@@ -61,7 +61,7 @@ class EmployeeController extends Controller
         Mail::to($employee->email)->send(new EmployeeCredentialsMail([
             'name' => $employee->name,
             'email' => $employee->email,
-            'password' => $request->password, // Send the plain password
+            'password' => $request->password,
         ]));
 
         return redirect()->route('admin.employee.list')->with([
@@ -84,7 +84,7 @@ class EmployeeController extends Controller
             'email' => 'required|email|unique:employees,email,' . $request->id,
             'position' => 'required|string',
             'password' => 'nullable|min:8',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust image validation as needed
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validation->fails()) {
@@ -97,9 +97,9 @@ class EmployeeController extends Controller
 
             // Handle image update
             if ($request->hasFile('image')) {
-                // Delete the old image if it exists and is not the dummy image
+                // Delete the old image if it exists and is not the default image
                 $oldImagePath = public_path('storage/' . $employee->image);
-                if (File::exists($oldImagePath) && $employee->image !== 'images/avatar.png') {
+                if (File::exists($oldImagePath) && $employee->image !== 'assets/images/avatar.png') {
                     File::delete($oldImagePath);
                 }
                 $filename = $request->file('image')->store('employee', 'public');
@@ -111,7 +111,7 @@ class EmployeeController extends Controller
             $employee->email = $request->email;
             $employee->position = $request->position;
             if ($request->filled('password')) {
-                $employee->password = Hash::make($request->password); // Hash the password if provided
+                $employee->password = Hash::make($request->password);
             }
 
             // Save the updated employee
@@ -129,9 +129,9 @@ class EmployeeController extends Controller
         // Find the employee by ID or fail
         $employee = Employee::findOrFail($request->id);
 
-        // Delete the employee image from storage if it exists and is not the dummy image
+        // Delete the employee image from storage if it exists and is not the default image
         $path = public_path('storage/' . $employee->image);
-        if (File::exists($path) && $employee->image !== 'images/dummy-image.jpg') {
+        if (File::exists($path) && $employee->image !== 'assets/images/avatar.png') {
             File::delete($path);
         }
 

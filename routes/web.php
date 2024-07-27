@@ -86,6 +86,13 @@ Route::prefix('employee')->group(function () {
     Route::post('login', [EmployeeAuthController::class, 'login']);
     Route::post('logout', [EmployeeAuthController::class, 'logout'])->name('employee.logout');
 
+    // Routes for employee password reset
+    Route::get('password/reset', [EmployeeAuthController::class, 'showForgotPasswordForm'])->name('password.request');
+    Route::post('password/email', [EmployeeAuthController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('password/reset/{token}', [EmployeeAuthController::class, 'showResetForm'])->name('password.reset');
+    Route::post('password/reset', [EmployeeAuthController::class, 'reset'])->name('password.update');
+
+
     Route::middleware('auth:employee')->group(function () {
         Route::get('account-settings', [EmployeeSettingsController::class, 'edit'])->name('employee.auth.accountsettings');
         Route::put('account-settings', [EmployeeSettingsController::class, 'update'])->name('employee.auth.accountsettings.update');

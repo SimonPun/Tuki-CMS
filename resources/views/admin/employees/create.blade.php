@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('title')
-    Dashboard
+    Add New Team Member
 @endsection
 
 @section('content')
@@ -15,6 +15,17 @@
                                 <h5 class="mb-0">Add New Team Member</h5>
                             </div>
                             <div class="card-body">
+                                <!-- Display Validation Errors -->
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
                                 <form action="{{ route('admin.employee.create') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
@@ -22,15 +33,15 @@
                                         <div class="col-md-6">
                                             <div class="position-relative form-group">
                                                 <label for="emp_name" class="">Name</label>
-                                                <input name="name" id="emp_name" placeholder="Enter Your Name"
-                                                    type="text" class="form-control">
+                                                <input name="name" id="emp_name" placeholder="Enter Employee Name"
+                                                    type="text" class="form-control" value="{{ old('name') }}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="position-relative form-group">
                                                 <label for="emp_email" class="">Email</label>
-                                                <input name="email" id="emp_email" placeholder="Enter Your Email"
-                                                    type="email" class="form-control">
+                                                <input name="email" id="emp_email" placeholder="Enter Employee Email"
+                                                    type="email" class="form-control" value="{{ old('email') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -47,7 +58,7 @@
                                                 <label for="emp_position" class="">Position</label>
                                                 <input name="position" id="emp_position"
                                                     placeholder="Enter Employee Position" type="text"
-                                                    class="form-control">
+                                                    class="form-control" value="{{ old('position') }}">
                                             </div>
                                         </div>
                                     </div>

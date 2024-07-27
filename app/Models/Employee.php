@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Notifications\Notifiable; // Import the Notifiable trait
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Employee extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable; // Include the Notifiable trait
 
     protected $fillable = [
         'name', 'email', 'password', 'phone', 'city', 'position', 'start_date', 'image', 'linkedin', 'facebook',
