@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ApplicantsController;
 use App\Http\Controllers\Admin\Auth\LoginController;
-use App\Http\Controllers\Admin\EmployeeActivitiesController; // Updated controller for activities
+use App\Http\Controllers\Admin\EmployeeActivitiesController;
 use App\Http\Controllers\Employee\DailyActivitiesController;
 use App\Http\Controllers\Employee\Auth\EmployeeSettingsController;
 use App\Http\Controllers\Employee\Auth\EmployeeAuthController;

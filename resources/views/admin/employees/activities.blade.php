@@ -1,3 +1,5 @@
+<!-- resources/views/admin/employees/activities.blade.php -->
+
 @extends('admin.layouts.app')
 
 @section('title', 'Employee Activities')
@@ -5,57 +7,109 @@
 @section('content')
     <div class="app-main__outer">
         <div class="app-main__inner">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">Activities for {{ $employee->name }}</div>
-
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">{{ $employee->name }}'s Activities</h4>
+                    <a href="{{ route('admin.employee.list') }}" class="btn btn-light btn-sm">
+                        <i class="bi bi-arrow-left"></i> Back to Employee List
+                    </a>
+                </div>
                 <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Check In</th>
-                                <th>Check Out</th>
-                                <th>Status</th>
-                                <th>Work List</th>
-                                <th>Finished Work</th>
-                                <th>Remaining Work</th>
-                                <th>File</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($employee->dailyActivities as $activity)
-                                <tr>
-                                    <td>{{ $activity->title }}</td>
-                                    <td>{{ $activity->check_in ? \Carbon\Carbon::parse($activity->check_in)->format('d-m-Y H:i') : 'N/A' }}
-                                    </td>
-                                    <td>{{ $activity->checkout ? \Carbon\Carbon::parse($activity->checkout)->format('d-m-Y H:i') : 'N/A' }}
-                                    </td>
-                                    <td>
-                                        @if ($activity->work_status == 0)
-                                            Not Started
-                                        @elseif ($activity->work_status == 1)
-                                            In Progress
-                                        @elseif ($activity->work_status == 2)
-                                            Completed
-                                        @endif
-                                    </td>
-                                    <td>{{ $activity->work_list }}</td>
-                                    <td>{{ $activity->finished_work }}</td>
-                                    <td>{{ $activity->remaining_work }}</td>
-                                    <td>
-                                        @if ($activity->file)
-                                            <a href="{{ asset('storage/' . $activity->file) }}" target="_blank"
-                                                class="btn btn-info btn-sm">View</a>
-                                            <a href="{{ route('dailyactivities.download', $activity->id) }}"
-                                                class="btn btn-success btn-sm">Download</a>
-                                        @else
-                                            N/A
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    @if ($employee->dailyActivities->isEmpty() && $employee->mentionedActivities->isEmpty())
+                        <div class="alert alert-info" role="alert">
+                            No activities found.
+                        </div>
+                    @else
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Check In</th>
+                                        <th>Check Out</th>
+                                        <th>Status</th>
+                                        <th>Colleagues</th>
+                                        <th>File</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($employee->dailyActivities as $activity)
+                                        <tr>
+                                            <td>{{ $activity->title }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($activity->check_in)->format('M d, Y h:i A') }}
+                                            </td>
+                                            <td>{{ \Carbon\Carbon::parse($activity->checkout)->format('M d, Y h:i A') }}
+                                            </td>
+                                            <td>
+                                                @if ($activity->work_status == 0)
+                                                    <span class="badge bg-secondary text-white">Not Started</span>
+                                                @elseif ($activity->work_status == 1)
+                                                    <span class="badge bg-warning text-dark">In Progress</span>
+                                                @elseif ($activity->work_status == 2)
+                                                    <span class="badge bg-success text-white">Completed</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @forelse ($activity->colleagues as $colleague)
+                                                    <span
+                                                        class="badge bg-info text-white mb-1">{{ $colleague->name }}</span>
+                                                @empty
+                                                    <span class="text-muted">No colleagues</span>
+                                                @endforelse
+                                            </td>
+                                            <td>
+                                                @if ($activity->file)
+                                                    <a href="{{ asset('storage/' . $activity->file) }}"
+                                                        class="btn btn-outline-primary btn-sm" download>
+                                                        <i class="bi bi-download"></i> Download
+                                                    </a>
+                                                @else
+                                                    <span class="text-muted">No file</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                    @foreach ($employee->mentionedActivities as $activity)
+                                        <tr>
+                                            <td>{{ $activity->title }} (Mentioned)</td>
+                                            <td>{{ \Carbon\Carbon::parse($activity->check_in)->format('M d, Y h:i A') }}
+                                            </td>
+                                            <td>{{ \Carbon\Carbon::parse($activity->checkout)->format('M d, Y h:i A') }}
+                                            </td>
+                                            <td>
+                                                @if ($activity->work_status == 0)
+                                                    <span class="badge bg-secondary text-white">Not Started</span>
+                                                @elseif ($activity->work_status == 1)
+                                                    <span class="badge bg-warning text-dark">In Progress</span>
+                                                @elseif ($activity->work_status == 2)
+                                                    <span class="badge bg-success text-white">Completed</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @forelse ($activity->colleagues as $colleague)
+                                                    <span
+                                                        class="badge bg-info text-white mb-1">{{ $colleague->name }}</span>
+                                                @empty
+                                                    <span class="text-muted">No colleagues</span>
+                                                @endforelse
+                                            </td>
+                                            <td>
+                                                @if ($activity->file)
+                                                    <a href="{{ asset('storage/' . $activity->file) }}"
+                                                        class="btn btn-outline-primary btn-sm" download>
+                                                        <i class="bi bi-download"></i> Download
+                                                    </a>
+                                                @else
+                                                    <span class="text-muted">No file</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

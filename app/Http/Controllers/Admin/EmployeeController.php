@@ -44,6 +44,8 @@ class EmployeeController extends Controller
         if ($request->hasFile('image')) {
             $filename = $request->file('image')->store('employee', 'public');
             $employee->image = $filename;
+        } else {
+            $employee->image = 'images/dummy-image.jpg'; // Fallback to dummy image
         }
 
         // Set other employee data
@@ -95,9 +97,10 @@ class EmployeeController extends Controller
 
             // Handle image update
             if ($request->hasFile('image')) {
-                $path = public_path('storage/' . $employee->image);
-                if (File::exists($path)) {
-                    File::delete($path);
+                // Delete the old image if it exists and is not the dummy image
+                $oldImagePath = public_path('storage/' . $employee->image);
+                if (File::exists($oldImagePath) && $employee->image !== 'images/avatar.png') {
+                    File::delete($oldImagePath);
                 }
                 $filename = $request->file('image')->store('employee', 'public');
                 $employee->image = $filename;
@@ -126,9 +129,9 @@ class EmployeeController extends Controller
         // Find the employee by ID or fail
         $employee = Employee::findOrFail($request->id);
 
-        // Delete the employee image from storage
+        // Delete the employee image from storage if it exists and is not the dummy image
         $path = public_path('storage/' . $employee->image);
-        if (File::exists($path)) {
+        if (File::exists($path) && $employee->image !== 'images/dummy-image.jpg') {
             File::delete($path);
         }
 

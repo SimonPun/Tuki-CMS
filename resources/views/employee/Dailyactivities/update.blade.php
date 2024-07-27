@@ -83,6 +83,19 @@
                                             placeholder="Describe the remaining work">{{ old('remaining_work', $activity->remaining_work) }}</textarea>
                                     </div>
 
+                                    <!-- Colleagues Field -->
+                                    <div class="col-md-12 form-group">
+                                        <label for="colleagues" class="form-label">Colleagues</label>
+                                        <select class="form-control" id="colleagues" name="colleagues[]" multiple>
+                                            @foreach ($employees as $employee)
+                                                <option value="{{ $employee->id }}"
+                                                    {{ in_array($employee->id, old('colleagues', $activity->colleagues->pluck('id')->toArray())) ? 'selected' : '' }}>
+                                                    {{ $employee->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
                                     <!-- File Upload Field -->
                                     <div class="col-md-12 form-group">
                                         <label for="file" class="form-label">File (Optional)</label>

@@ -64,7 +64,9 @@
             e.preventDefault();
 
             const id = $(this).data('id');
-            if (id != "") {
+            const isConfirmed = confirm('Are you sure you want to delete this task?');
+
+            if (isConfirmed) {
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('admin.task.delete') }}",
@@ -74,7 +76,7 @@
                     },
                     dataType: 'json',
                     success: (data) => {
-                        if (data.success == true) {
+                        if (data.success) {
                             alert(data.message);
                             window.location.href = "{{ route('admin.task.list') }}";
                         } else {

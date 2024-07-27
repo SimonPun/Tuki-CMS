@@ -1,16 +1,22 @@
 <?php
 
-// app/Http/Controllers/Employee/EmployeeDashboardController.php
-
 namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Activity;
 
 class EmployeeDashboardController extends Controller
 {
     public function index()
     {
-        return view('employee.userdashboard');
+        // Fetch the authenticated employee
+        $employee = Auth::user();
+
+        // Fetch the activities of the authenticated employee
+        $activities = $employee->activities;
+
+        // Pass the activities to the view
+        return view('employee.userdashboard', compact('activities'));
     }
 }

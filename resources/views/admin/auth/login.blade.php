@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMwWv3fI6Vb2qUVbRit6vJ2xJf3cuV/Zl9tC5" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/9745dbc339.js" crossorigin="anonymous"></script>
-    {{-- <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon"> --}}
+    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
 
 </head>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Employee;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DailyActivity;
+use App\Models\Employee;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,35 +13,40 @@ class DailyActivitiesController extends Controller
 {
     public function index()
     {
-        // Fetch all daily activities for the logged-in employee
-        $activities = DailyActivity::where('employee_id', Auth::guard('employee')->user()->id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $employeeId = Auth::guard('employee')->user()->id;
 
-        // Pass $activities to the view
+        // Retrieve activities where the employee is either the owner or mentioned as a colleague
+        $activities = DailyActivity::where(function ($query) use ($employeeId) {
+            $query->where('employee_id', $employeeId)
+                ->orWhereHas('colleagues', function ($query) use ($employeeId) {
+                    $query->where('employee_id', $employeeId);
+                });
+        })->with('colleagues')->orderBy('created_at', 'desc')->get();
+
         return view('employee.dailyactivities.index', compact('activities'));
     }
 
     public function create()
     {
-        return view('employee.dailyactivities.create');
+        $employees = Employee::all();
+        return view('employee.dailyactivities.create', compact('employees'));
     }
 
     public function store(Request $request)
     {
-        // Validate the data
         $request->validate([
             'title' => 'required|string|max:255',
-            'check_in' => 'required',
-            'checkout' => 'required',
+            'check_in' => 'required|date',
+            'checkout' => 'required|date',
             'file' => 'nullable|file|mimes:jpeg,png,pdf,doc,docx|max:2048',
             'work_status' => 'required|integer',
             'work_list' => 'required|string|max:255',
             'finished_work' => 'required|string|max:255',
             'remaining_work' => 'required|string|max:255',
+            'colleagues' => 'nullable|array',
+            'colleagues.*' => 'exists:employees,id'
         ]);
 
-        // Store data logic
         $dailyActivity = new DailyActivity();
         $dailyActivity->employee_id = Auth::guard('employee')->user()->id;
         $dailyActivity->title = $request->input('title');
@@ -58,46 +64,49 @@ class DailyActivitiesController extends Controller
 
         $dailyActivity->save();
 
+        // Attach colleagues if provided
+        if ($request->has('colleagues')) {
+            $dailyActivity->colleagues()->attach($request->input('colleagues'));
+        }
+
         return redirect()->route('dailyactivities.index')->with('success', 'Daily activity added successfully.');
     }
 
     public function edit($id)
     {
-        // Find the daily activity by ID
         $activity = DailyActivity::findOrFail($id);
 
-        // Ensure the user can only edit their own activities
         if ($activity->employee_id !== Auth::guard('employee')->user()->id) {
-            abort(403); // Unauthorized
+            abort(403);
         }
 
-        // Pass $activity to the view
-        return view('employee.dailyactivities.update', compact('activity'));
+        $employees = Employee::all();
+        $selectedColleagues = $activity->colleagues->pluck('id')->toArray();
+
+        return view('employee.dailyactivities.update', compact('activity', 'employees', 'selectedColleagues'));
     }
 
     public function update(Request $request, $id)
     {
-        // Find the daily activity by ID
         $dailyActivity = DailyActivity::findOrFail($id);
 
-        // Ensure the user can only update their own activities
         if ($dailyActivity->employee_id !== Auth::guard('employee')->user()->id) {
-            abort(403); // Unauthorized
+            abort(403);
         }
 
-        // Validate the data
         $request->validate([
             'title' => 'required|string|max:255',
-            'check_in' => 'required',
-            'checkout' => 'required',
+            'check_in' => 'required|date',
+            'checkout' => 'required|date',
             'file' => 'nullable|file|mimes:jpeg,png,pdf,doc,docx|max:2048',
             'work_status' => 'required|integer',
             'work_list' => 'required|string|max:255',
             'finished_work' => 'required|string|max:255',
             'remaining_work' => 'required|string|max:255',
+            'colleagues' => 'nullable|array',
+            'colleagues.*' => 'exists:employees,id'
         ]);
 
-        // Update data logic
         $dailyActivity->title = $request->input('title');
         $dailyActivity->check_in = $request->input('check_in');
         $dailyActivity->checkout = $request->input('checkout');
@@ -107,7 +116,6 @@ class DailyActivitiesController extends Controller
         $dailyActivity->remaining_work = $request->input('remaining_work');
 
         if ($request->hasFile('file')) {
-            // Delete the old file if it exists
             if ($dailyActivity->file && Storage::exists('public/' . $dailyActivity->file)) {
                 Storage::delete('public/' . $dailyActivity->file);
             }
@@ -117,25 +125,28 @@ class DailyActivitiesController extends Controller
 
         $dailyActivity->save();
 
+        // Sync colleagues if provided
+        if ($request->has('colleagues')) {
+            $dailyActivity->colleagues()->sync($request->input('colleagues'));
+        } else {
+            $dailyActivity->colleagues()->detach();
+        }
+
         return redirect()->route('dailyactivities.index')->with('success', 'Daily activity updated successfully.');
     }
 
     public function destroy($id)
     {
-        // Find the daily activity by ID
         $dailyActivity = DailyActivity::findOrFail($id);
 
-        // Ensure the user can only delete their own activities
         if ($dailyActivity->employee_id !== Auth::guard('employee')->user()->id) {
-            abort(403); // Unauthorized
+            abort(403);
         }
 
-        // Delete the file if it exists
         if ($dailyActivity->file && Storage::exists('public/' . $dailyActivity->file)) {
             Storage::delete('public/' . $dailyActivity->file);
         }
 
-        // Delete the daily activity
         $dailyActivity->delete();
 
         return redirect()->route('dailyactivities.index')->with('success', 'Daily activity deleted successfully.');
@@ -143,15 +154,12 @@ class DailyActivitiesController extends Controller
 
     public function download($id)
     {
-        // Find the daily activity by ID
         $activity = DailyActivity::findOrFail($id);
 
-        // Ensure the user can only download their own activities
         if ($activity->employee_id !== Auth::guard('employee')->user()->id) {
-            abort(403); // Unauthorized
+            abort(403);
         }
 
-        // Check if the file exists and return it
         if ($activity->file) {
             $filePath = storage_path('app/public/' . $activity->file);
             $fileName = basename($filePath);

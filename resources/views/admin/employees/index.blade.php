@@ -30,7 +30,7 @@
                                             <td>
                                                 <div class="widget-content-left">
                                                     <img width="40" class="rounded-circle"
-                                                        src="{{ asset('storage/' . $employee->image) }}"
+                                                        src="{{ $employee->image ? asset('storage/' . $employee->image) : asset('images/avatar.png') }}"
                                                         alt="{{ $employee->name }}">
                                                 </div>
                                             </td>
@@ -45,7 +45,7 @@
                                                         @method('delete')
                                                         <input type="hidden" name="id" value="{{ $employee->id }}">
                                                         <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this employee?')">Delete</button>
+                                                            onclick="return confirmDeletion()">Delete</button>
                                                     </form>
                                                     <a href="{{ route('admin.employee.edit', ['id' => $employee->id]) }}"
                                                         class="btn btn-primary btn-sm">Edit</a>
@@ -68,5 +68,9 @@
         $(document).ready(function() {
             $('#list_employee').DataTable();
         });
+
+        function confirmDeletion() {
+            return confirm('Are you sure you want to delete this employee?');
+        }
     </script>
 @endsection

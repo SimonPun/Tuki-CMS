@@ -14,6 +14,7 @@ class CreateDailyActivitiesTable extends Migration
             $table->string('title');
             $table->string('check_in')->nullable();
             $table->string('checkout')->nullable();
+            $table->string('colleague_id')->nullable();
             $table->string('work_status')->nullable()->default('0');
             $table->text('work_list')->nullable();
             $table->text('finished_work')->nullable();

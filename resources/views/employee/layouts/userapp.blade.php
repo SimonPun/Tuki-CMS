@@ -13,6 +13,8 @@
     <meta name="msapplication-tap-highlight" content="no">
     <link href="{{ asset('main.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css">
     <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
 </head>
 
@@ -20,13 +22,10 @@
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
         <div class="app-header header-shadow">
             <div class="app-header__logo">
-                <div class="app-header__logo">
-                    <a href="{{ route('employee.dashboard') }}">
-                        <img src="{{ asset('assets/images/tuki_logo.png') }}" alt="Logo"
-                            style="height: 23px; width: auto;">
-                    </a>
-
-                </div>
+                <a href="{{ route('employee.dashboard') }}">
+                    <img src="{{ asset('assets/images/tuki_logo.png') }}" alt="Logo"
+                        style="height: 23px; width: auto;">
+                </a>
                 <div class="header__pane ml-auto">
                     <div>
                         <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
@@ -49,8 +48,7 @@
                 </span>
             </div>
             <div class="app-header__content">
-                <div class="app-header-left">
-                </div>
+                <div class="app-header-left"></div>
                 <div class="app-header-right">
                     <div class="header-btn-lg pr-0">
                         <div class="widget-content p-0">
@@ -155,11 +153,25 @@
             <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
         </div>
     </div>
+
     <script type="text/javascript" src="{{ asset('assets/scripts/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/scripts/main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('app.js') }}"></script>
     <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
     @yield('footer')
+
+    <script>
+        $(document).ready(function() {
+            $('#colleagues').select2({
+                placeholder: 'Select colleagues',
+                allowClear: true
+            });
+        });
+    </script>
 </body>
 
 </html>

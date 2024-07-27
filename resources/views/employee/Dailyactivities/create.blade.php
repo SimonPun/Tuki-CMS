@@ -38,7 +38,7 @@
 
                                         <div class="form-group">
                                             <label for="check_in">Check In</label>
-                                            <input id="check_in" type="text"
+                                            <input id="check_in" type="date"
                                                 class="form-control @error('check_in') is-invalid @enderror" name="check_in"
                                                 value="{{ old('check_in') }}">
                                             @error('check_in')
@@ -50,7 +50,7 @@
 
                                         <div class="form-group">
                                             <label for="checkout">Check Out</label>
-                                            <input id="checkout" type="text"
+                                            <input id="checkout" type="date"
                                                 class="form-control @error('checkout') is-invalid @enderror" name="checkout"
                                                 value="{{ old('checkout') }}">
                                             @error('checkout')
@@ -128,6 +128,20 @@
                                                 </span>
                                             @enderror
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="colleagues">Colleagues</label>
+                                            <select id="colleagues" name="colleagues[]" class="form-control" multiple>
+                                                @foreach ($employees as $employee)
+                                                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('colleagues')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
 
@@ -140,4 +154,5 @@
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection

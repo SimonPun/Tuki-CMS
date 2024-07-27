@@ -39,7 +39,7 @@
                                                 </td>
                                                 <td>
                                                     <form action="{{ route('admin.vacancy.delete', $vacancy->id) }}"
-                                                        method="POST" style="display:inline;">
+                                                        method="POST" style="display:inline;" class="delete-form">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger">Delete</button>
@@ -64,6 +64,17 @@
     <script>
         $(document).ready(function() {
             $('#list_vacancies').DataTable();
+        });
+
+        $(document).on('submit', '.delete-form', function(e) {
+            e.preventDefault();
+
+            const form = this;
+            const isConfirmed = confirm('Are you sure you want to delete this vacancy?');
+
+            if (isConfirmed) {
+                form.submit(); // Proceed with form submission if confirmed
+            }
         });
     </script>
 @endsection
