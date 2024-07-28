@@ -39,11 +39,13 @@
                                                     <span class="badge badge-warning">In Progress</span>
                                                 @elseif ($activity->work_status == 2)
                                                     <span class="badge badge-success">Completed</span>
+                                                @elseif ($activity->work_status == 3)
+                                                    <span class="badge badge-danger">Pending</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 @forelse ($activity->colleagues as $colleague)
-                                                    <div class="badge badge-info"
+                                                    <div class="badge bg-primary text-white mb-1"
                                                         style="display: block; margin-bottom: 5px; font-size: 0.8rem; padding: 0.2em 0.4em; max-width: 150px;">
                                                         {{ $colleague->name }}
                                                     </div>

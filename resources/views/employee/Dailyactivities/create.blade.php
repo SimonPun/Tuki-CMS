@@ -85,6 +85,8 @@
                                                     Progress</option>
                                                 <option value="2" {{ old('work_status') == '2' ? 'selected' : '' }}>
                                                     Completed</option>
+                                                <option value="3" {{ old('work_status') == '3 ' ? 'selected' : '' }}>
+                                                    Pending</option>
                                             </select>
                                             @error('work_status')
                                                 <span class="invalid-feedback" role="alert">

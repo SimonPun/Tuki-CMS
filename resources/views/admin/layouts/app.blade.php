@@ -218,6 +218,22 @@
                             </li>
                             <li>
                                 <a href="#">
+                                    <i class="metismenu-icon pe-7s-box1"></i>
+                                    Attandence
+                                    <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                </a>
+                                <ul class="mm-collapse">
+                                    <li>
+                                        <a href="">
+                                            <i class="metismenu-icon pe-7s-rocket"></i>
+                                            View Attandence
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">
                                     <i class="metismenu-icon pe-7s-unlock"></i>
                                     Admin
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>

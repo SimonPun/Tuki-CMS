@@ -73,7 +73,7 @@
                                             <a href="{{ route('employee.auth.accountsettings') }}"
                                                 class="dropdown-item">Account Setting</a>
                                             <form method="POST" action="{{ route('employee.logout') }}"
-                                                style="display: inline;">
+                                                onsubmit="return confirmLogout(event)" style="display: inline;">
                                                 @csrf
                                                 <button type="submit" class="dropdown-item"
                                                     tabindex="0">Logout</button>
@@ -165,6 +165,13 @@
     @yield('footer')
 
     <script>
+        function confirmLogout(event) {
+            event.preventDefault();
+            if (confirm('Are you sure you want to log out?')) {
+                event.target.submit();
+            }
+        }
+
         $(document).ready(function() {
             $('#colleagues').select2({
                 placeholder: 'Select colleagues',

@@ -51,8 +51,11 @@
                                     <div class="col-md-6 form-group">
                                         <label for="work_status" class="form-label">Work Status</label>
                                         <select class="form-control" id="work_status" name="work_status">
+                                            <option value="0"
+                                                {{ old('work_status', $activity->work_status) == 0 ? 'selected' : '' }}>Not
+                                                Started</option>
                                             <option value="1"
-                                                {{ old('work_status', $activity->work_status) == 1 ? 'selected' : '' }}>Work
+                                                {{ old('work_status', $activity->work_status) == 1 ? 'selected' : '' }}>
                                                 In Progress</option>
                                             <option value="2"
                                                 {{ old('work_status', $activity->work_status) == 2 ? 'selected' : '' }}>

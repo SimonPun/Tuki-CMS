@@ -1,5 +1,3 @@
-<!-- resources/views/admin/employees/activities.blade.php -->
-
 @extends('admin.layouts.app')
 
 @section('title', 'Employee Activities')
@@ -21,8 +19,8 @@
                         </div>
                     @else
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
-                                <thead class="bg-light">
+                            <table class="table table-striped table-hover table-bordered">
+                                <thead class="thead-light">
                                     <tr>
                                         <th>Title</th>
                                         <th>Check In</th>
@@ -47,14 +45,18 @@
                                                     <span class="badge bg-warning text-dark">In Progress</span>
                                                 @elseif ($activity->work_status == 2)
                                                     <span class="badge bg-success text-white">Completed</span>
+                                                @elseif ($activity->work_status == 3)
+                                                    <span class="badge bg-danger text-white">Pending</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 @forelse ($activity->colleagues as $colleague)
-                                                    <span
-                                                        class="badge bg-info text-white mb-1">{{ $colleague->name }}</span>
+                                                    <div class="badge bg-primary text-white mb-1"
+                                                        style="display: block; margin-bottom: 5px; font-size: 0.8rem; padding: 0.2em 0.4em; max-width: 150px;">
+                                                        {{ $colleague->name }}
+                                                    </div>
                                                 @empty
-                                                    <span class="text-muted">No colleagues</span>
+                                                    <div class="text-muted">No colleagues</div>
                                                 @endforelse
                                             </td>
                                             <td>
@@ -84,14 +86,18 @@
                                                     <span class="badge bg-warning text-dark">In Progress</span>
                                                 @elseif ($activity->work_status == 2)
                                                     <span class="badge bg-success text-white">Completed</span>
+                                                @elseif ($activity->work_status == 3)
+                                                    <span class="badge bg-danger text-white">Pending</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 @forelse ($activity->colleagues as $colleague)
-                                                    <span
-                                                        class="badge bg-info text-white mb-1">{{ $colleague->name }}</span>
+                                                    <div class="badge bg-primary text-white mb-1"
+                                                        style="display: block; margin-bottom: 5px; font-size: 0.8rem; padding: 0.2em 0.4em; max-width: 150px;">
+                                                        {{ $colleague->name }}
+                                                    </div>
                                                 @empty
-                                                    <span class="text-muted">No colleagues</span>
+                                                    <div class="text-muted">No colleagues</div>
                                                 @endforelse
                                             </td>
                                             <td>

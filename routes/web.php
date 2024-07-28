@@ -66,6 +66,7 @@ Route::prefix('admin')->group(function () {
             Route::get('/create', [ApplicantsController::class, 'create'])->name('create');
             Route::post('/store', [ApplicantsController::class, 'store'])->name('store');
             Route::delete('/{id}/delete', [ApplicantsController::class, 'destroy'])->name('destroy');
+            Route::post('/{id}/reply', [ApplicantsController::class, 'reply'])->name('reply'); // Add this line
         });
 
         // Admin CRUD Routes
@@ -91,7 +92,6 @@ Route::prefix('employee')->group(function () {
     Route::post('password/email', [EmployeeAuthController::class, 'sendResetLinkEmail'])->name('password.email');
     Route::get('password/reset/{token}', [EmployeeAuthController::class, 'showResetForm'])->name('password.reset');
     Route::post('password/reset', [EmployeeAuthController::class, 'reset'])->name('password.update');
-
 
     Route::middleware('auth:employee')->group(function () {
         Route::get('account-settings', [EmployeeSettingsController::class, 'edit'])->name('employee.auth.accountsettings');

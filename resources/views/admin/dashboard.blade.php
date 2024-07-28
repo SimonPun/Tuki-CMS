@@ -43,11 +43,11 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <a href="{{ route('admin.employee.show', ['id' => $item->id]) }}"
-                                                        class="btn btn-outline-primary btn-sm">
+                                                        class="btn btn-primary btn-sm">
                                                         <i class="bi bi-info-circle"></i> Details
                                                     </a>
                                                     <a href="{{ route('admin.employees.activities', ['id' => $item->id]) }}"
-                                                        class="btn btn-outline-danger btn-sm">
+                                                        class="btn btn-danger btn-sm">
                                                         <i class="bi bi-calendar-event"></i> Activities
                                                     </a>
                                                 </td>

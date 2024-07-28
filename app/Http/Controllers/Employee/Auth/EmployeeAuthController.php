@@ -36,7 +36,7 @@ class EmployeeAuthController extends Controller
     public function logout(Request $request)
     {
         Auth::guard('employee')->logout();
-        return redirect()->route('employee.login'); // Redirect to employee login page after logout
+        return redirect()->route('employee.login')->with('status', 'Logout successful!');
     }
 
     // Show the form for requesting a password reset link
@@ -97,7 +97,7 @@ class EmployeeAuthController extends Controller
         );
 
         return $response === Password::PASSWORD_RESET
-            ? redirect()->route('employee.login')->with('status', __($response))
+            ? redirect()->route('employee.login')->with('status', 'Password reset successful!')
             : back()->withErrors(['email' => [__($response)]]);
     }
 }
