@@ -18,7 +18,6 @@ class ApplicantsController extends Controller
     public function index()
     {
         $applicants = Applicants::all();
-
         return view('admin.applicants.index', compact('applicants'));
     }
 
@@ -53,21 +52,15 @@ class ApplicantsController extends Controller
         if ($request->hasFile('cv')) {
             $file = $request->file('cv');
             $originalName = $file->getClientOriginalName();
-
-            // Define the path where the file should be stored
             $destinationPath = 'cv';
-
-            // Store the file with the original name in the public disk
             $cvPath = $file->storeAs($destinationPath, $originalName, 'public');
-
-            // Save the original file name in the validated data
             $validatedData['cv'] = $originalName;
         }
 
         // Create the applicant record
         Applicants::create($validatedData);
 
-        // Redirect to a success page or return a response
+        // Redirect with success message
         return redirect()->route('admin.applicants.create')->with('success', 'Application submitted successfully!');
     }
 
@@ -113,14 +106,9 @@ class ApplicantsController extends Controller
             'cv' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ]);
 
-        // Retrieve the applicant record
+        // Find the applicant by ID
         $applicant = Applicants::findOrFail($id);
-
-        // Update applicant details
-        $applicant->name = $validatedData['name'];
-        $applicant->email = $validatedData['email'];
-        $applicant->subject = $validatedData['subject'];
-        $applicant->description = $validatedData['description'];
+        $applicant->update($validatedData);
 
         // Handle CV update if provided
         if ($request->hasFile('cv')) {
@@ -131,7 +119,7 @@ class ApplicantsController extends Controller
         // Save the applicant record
         $applicant->save();
 
-        // Redirect to a success page or return a response
+        // Redirect with success message
         return redirect()->route('admin.applicants.edit', $applicant->id)->with('success', 'Applicant details updated successfully!');
     }
 
@@ -143,8 +131,11 @@ class ApplicantsController extends Controller
      */
     public function destroy($id)
     {
+        // Find the applicant by ID and delete
         $applicant = Applicants::findOrFail($id);
         $applicant->delete();
+
+        // Redirect with success message
         return redirect()->route('admin.applicants.index')->with('success', 'Applicant deleted successfully!');
     }
 
@@ -157,6 +148,7 @@ class ApplicantsController extends Controller
      */
     public function reply(Request $request, $id)
     {
+        // Find the applicant by ID
         $applicant = Applicants::findOrFail($id);
 
         // Validate the reply input
@@ -164,10 +156,15 @@ class ApplicantsController extends Controller
             'reply_message' => 'required|string|max:5000',
         ]);
 
-        // Send the reply (you can use mail or other means)
-        Mail::to($applicant->email)->send(new ApplicantReplyMail($request->input('reply_message')));
+        try {
+            // Send the reply
+            Mail::to($applicant->email)->send(new ApplicantReplyMail($request->input('reply_message')));
 
-        // Redirect back with a success message
-        return redirect()->route('admin.applicants.index')->with('success', 'Reply sent successfully.');
+            // Redirect with success message
+            return redirect()->route('admin.applicants.index')->with('reply_message', 'Reply sent successfully.');
+        } catch (\Exception $e) {
+            // Redirect with error message
+            return redirect()->route('admin.applicants.index')->with('error', 'Failed to send reply.');
+        }
     }
 }

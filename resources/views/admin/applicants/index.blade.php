@@ -8,6 +8,37 @@
     <div class="app-main__outer">
         <div class="app-main__inner">
             <div class="container">
+                <!-- Notification Messages -->
+                @if (session('success'))
+                    <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div id="error-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                <!-- Toast Notifications -->
+                <div aria-live="polite" aria-atomic="true" class="position-relative">
+                    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+                        <div id="reply-toast" class="toast align-items-center text-bg-primary border-0" role="alert"
+                            aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                    {{ session('reply_message') }}
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                                    aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Your existing code -->
                 <div class="card">
                     <div class="card-header bg-primary text-white">
                         <h3>List of Applicants</h3>
@@ -89,6 +120,25 @@
                     replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
                 });
             @endforeach
+
+            // Auto-hide alert messages after a certain time
+            setTimeout(function() {
+                var successAlert = document.getElementById('success-alert');
+                if (successAlert) {
+                    successAlert.classList.remove('show');
+                }
+                var errorAlert = document.getElementById('error-alert');
+                if (errorAlert) {
+                    errorAlert.classList.remove('show');
+                }
+            }, 5000); // Hide after 5 seconds
+
+            // Show toast notification if reply message exists
+            @if (session('reply_message'))
+                var toastEl = document.getElementById('reply-toast');
+                var toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            @endif
         });
     </script>
 @endsection

@@ -28,6 +28,7 @@
                                         <th>Status</th>
                                         <th>Colleagues</th>
                                         <th>File</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -69,6 +70,10 @@
                                                     <span class="text-muted">No file</span>
                                                 @endif
                                             </td>
+                                            <td>
+                                                <a href="{{ route('admin.employee.work_view', ['id' => $activity->id]) }}"
+                                                    class="btn btn-primary btn-sm">View Work</a>
+                                            </td>
                                         </tr>
                                     @endforeach
 
@@ -109,6 +114,10 @@
                                                 @else
                                                     <span class="text-muted">No file</span>
                                                 @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('admin.employee.work_view', ['id' => $activity->id]) }}"
+                                                    class="btn btn-primary btn-sm">View Work</a>
                                             </td>
                                         </tr>
                                     @endforeach

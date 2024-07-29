@@ -177,6 +177,24 @@
                 placeholder: 'Select colleagues',
                 allowClear: true
             });
+
+            $('#work_list').summernote({
+                placeholder: 'Enter work list details',
+                tabsize: 2,
+                height: 100
+            });
+
+            $('#finished_work').summernote({
+                placeholder: 'Enter finished work details',
+                tabsize: 2,
+                height: 100
+            });
+
+            $('#remaining_work').summernote({
+                placeholder: 'Enter remaining work details',
+                tabsize: 2,
+                height: 100
+            });
         });
     </script>
 </body>

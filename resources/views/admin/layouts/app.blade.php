@@ -264,6 +264,9 @@
             <script src="https://maps.google.com/maps/api/js?sensor=true"></script>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
     <script type="text/javascript" src="{{ asset('assets/scripts/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/scripts/main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('app.js') }}"></script>

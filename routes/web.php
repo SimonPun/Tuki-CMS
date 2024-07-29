@@ -38,6 +38,8 @@ Route::prefix('admin')->group(function () {
             Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('employee.edit');
             Route::post('/update', [EmployeeController::class, 'update'])->name('employee.update');
             Route::get('/show/{id}', [EmployeeController::class, 'show'])->name('employee.show');
+            Route::get('/{id}/work_view', [EmployeeController::class, 'showWork'])->name('employee.work_view'); // Updated method name
+
         });
 
         // Task Routes

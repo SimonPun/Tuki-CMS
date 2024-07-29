@@ -40,9 +40,9 @@ class DailyActivitiesController extends Controller
             'checkout' => 'required|date',
             'file' => 'nullable|file|mimes:jpeg,png,pdf,doc,docx|max:2048',
             'work_status' => 'required|integer',
-            'work_list' => 'required|string|max:255',
-            'finished_work' => 'required|string|max:255',
-            'remaining_work' => 'required|string|max:255',
+            'work_list' => 'nullable|string|max:255',
+            'finished_work' => 'nullable|string|max:255',
+            'remaining_work' => 'nullable|string|max:255',
             'colleagues' => 'nullable|array',
             'colleagues.*' => 'exists:employees,id'
         ]);
@@ -100,9 +100,9 @@ class DailyActivitiesController extends Controller
             'checkout' => 'required|date',
             'file' => 'nullable|file|mimes:jpeg,png,pdf,doc,docx|max:2048',
             'work_status' => 'required|integer',
-            'work_list' => 'required|string|max:255',
-            'finished_work' => 'required|string|max:255',
-            'remaining_work' => 'required|string|max:255',
+            'work_list' => 'nullable|string|max:255',
+            'finished_work' => 'nullable|string|max:255',
+            'remaining_work' => 'nullable|string|max:255',
             'colleagues' => 'nullable|array',
             'colleagues.*' => 'exists:employees,id'
         ]);

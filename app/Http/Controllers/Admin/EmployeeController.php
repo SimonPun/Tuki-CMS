@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Models\DailyActivity;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use App\Mail\EmployeeCredentialsMail;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\EmployeeCredentialsMail;
+use Illuminate\Support\Facades\Validator;
 
 class EmployeeController extends Controller
 {
@@ -146,5 +147,11 @@ class EmployeeController extends Controller
     {
         $employee = Employee::findOrFail($id);
         return view('admin.employees.show', compact('employee'));
+    }
+    public function showWork($id)
+    {
+        $activity = DailyActivity::findOrFail($id);
+        $employee = $activity->employee;
+        return view('admin.employees.work_view', compact('activity', 'employee'));
     }
 }
