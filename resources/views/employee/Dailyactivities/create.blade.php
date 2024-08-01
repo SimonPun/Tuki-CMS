@@ -37,7 +37,7 @@
                                     </div>
 
                                     <div class="form-group col-md-6">
-                                        <label for="check_in">Check In</label>
+                                        <label for="check_in">Created At</label>
                                         <input id="check_in" type="date"
                                             class="form-control @error('check_in') is-invalid @enderror" name="check_in"
                                             value="{{ old('check_in') }}">
@@ -51,7 +51,7 @@
 
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="checkout">Check Out</label>
+                                        <label for="checkout">Updated At</label>
                                         <input id="checkout" type="date"
                                             class="form-control @error('checkout') is-invalid @enderror" name="checkout"
                                             value="{{ old('checkout') }}">
@@ -75,7 +75,7 @@
                                 </div>
 
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
+                                    {{-- <div class="form-group col-md-6">
                                         <label for="work_status">Work Status</label>
                                         <select id="work_status"
                                             class="form-control @error('work_status') is-invalid @enderror"
@@ -94,7 +94,7 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-                                    </div>
+                                    </div> --}}
 
                                     <div class="form-group col-md-6">
                                         <label for="colleagues">Colleagues</label>

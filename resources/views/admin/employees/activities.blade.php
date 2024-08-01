@@ -13,7 +13,12 @@
                     </a>
                 </div>
                 <div class="card-body">
-                    @if ($employee->dailyActivities->isEmpty() && $employee->mentionedActivities->isEmpty())
+                    @php
+                        $dailyActivities = $employee->dailyActivities ?? collect();
+                        $mentionedActivities = $mentionedActivities ?? collect();
+                    @endphp
+
+                    @if ($dailyActivities->isEmpty() && $mentionedActivities->isEmpty())
                         <div class="alert alert-info" role="alert">
                             No activities found.
                         </div>
@@ -27,12 +32,14 @@
                                         <th>Check Out</th>
                                         <th>Status</th>
                                         <th>Colleagues</th>
+                                        <th>Creator</th> <!-- New Column for Creator -->
                                         <th>File</th>
+                                        <th>Created By</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($employee->dailyActivities as $activity)
+                                    @foreach ($dailyActivities as $activity)
                                         <tr>
                                             <td>{{ $activity->title }}</td>
                                             <td>{{ \Carbon\Carbon::parse($activity->check_in)->format('M d, Y h:i A') }}
@@ -61,6 +68,18 @@
                                                 @endforelse
                                             </td>
                                             <td>
+                                                @if ($activity->creator)
+                                                    <div class="badge bg-success text-white mb-1"
+                                                        style="display: block; margin-bottom: 5px; font-size: 0.8rem; padding: 0.2em 0.4em; max-width: 150px;"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                                        title="Created By: {{ $activity->creator->name }}">
+                                                        {{ $activity->creator->name }}
+                                                    </div>
+                                                @else
+                                                    <div class="text-muted">No creator</div>
+                                                @endif
+                                            </td>
+                                            <td>
                                                 @if ($activity->file)
                                                     <a href="{{ asset('storage/' . $activity->file) }}"
                                                         class="btn btn-outline-primary btn-sm" download>
@@ -70,14 +89,52 @@
                                                     <span class="text-muted">No file</span>
                                                 @endif
                                             </td>
+                                            <td>{{ $activity->employee->name }}</td>
                                             <td>
                                                 <a href="{{ route('admin.employee.work_view', ['id' => $activity->id]) }}"
                                                     class="btn btn-primary btn-sm">View Work</a>
+                                                <!-- Modal Trigger Button -->
+                                                @if ($activity->creator)
+                                                    <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                        data-bs-target="#creatorModal-{{ $activity->id }}">
+                                                        View Creator
+                                                    </a>
+                                                @endif
+                                                <!-- Creator Details Modal -->
+                                                <div class="modal fade" id="creatorModal-{{ $activity->id }}"
+                                                    tabindex="-1" aria-labelledby="creatorModalLabel-{{ $activity->id }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="creatorModalLabel-{{ $activity->id }}">Creator
+                                                                    Details</h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @if ($activity->creator)
+                                                                    <p>Name: {{ $activity->creator->name }}</p>
+                                                                    <p>Email: {{ $activity->creator->email }}</p>
+                                                                    <p>Position: {{ $activity->creator->position }}</p>
+                                                                @else
+                                                                    <p>No creator information available.</p>
+                                                                @endif
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
 
-                                    @foreach ($employee->mentionedActivities as $activity)
+                                    {{-- Display mentioned activities --}}
+                                    @foreach ($mentionedActivities as $activity)
                                         <tr>
                                             <td>{{ $activity->title }} (Mentioned)</td>
                                             <td>{{ \Carbon\Carbon::parse($activity->check_in)->format('M d, Y h:i A') }}
@@ -106,6 +163,18 @@
                                                 @endforelse
                                             </td>
                                             <td>
+                                                @if ($activity->creator)
+                                                    <div class="badge bg-success text-white mb-1"
+                                                        style="display: block; margin-bottom: 5px; font-size: 0.8rem; padding: 0.2em 0.4em; max-width: 150px;"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                                        title="Created By: {{ $activity->creator->name }}">
+                                                        {{ $activity->creator->name }}
+                                                    </div>
+                                                @else
+                                                    <div class="text-muted">No creator</div>
+                                                @endif
+                                            </td>
+                                            <td>
                                                 @if ($activity->file)
                                                     <a href="{{ asset('storage/' . $activity->file) }}"
                                                         class="btn btn-outline-primary btn-sm" download>
@@ -115,9 +184,46 @@
                                                     <span class="text-muted">No file</span>
                                                 @endif
                                             </td>
+                                            <td>{{ $activity->employee->name }}</td>
                                             <td>
                                                 <a href="{{ route('admin.employee.work_view', ['id' => $activity->id]) }}"
                                                     class="btn btn-primary btn-sm">View Work</a>
+                                                <!-- Modal Trigger Button -->
+                                                @if ($activity->creator)
+                                                    <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                        data-bs-target="#creatorModal-{{ $activity->id }}">
+                                                        View Creator
+                                                    </a>
+                                                @endif
+                                                <!-- Creator Details Modal -->
+                                                <div class="modal fade" id="creatorModal-{{ $activity->id }}"
+                                                    tabindex="-1" aria-labelledby="creatorModalLabel-{{ $activity->id }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="creatorModalLabel-{{ $activity->id }}">Creator
+                                                                    Details</h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @if ($activity->creator)
+                                                                    <p>Name: {{ $activity->creator->name }}</p>
+                                                                    <p>Email: {{ $activity->creator->email }}</p>
+                                                                    <p>Position: {{ $activity->creator->position }}</p>
+                                                                @else
+                                                                    <p>No creator information available.</p>
+                                                                @endif
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

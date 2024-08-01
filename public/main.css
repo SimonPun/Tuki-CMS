@@ -2316,6 +2316,7 @@ pre code {
 .table-responsive {
     display: block;
     width: 100%;
+    height: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar
@@ -5289,7 +5290,8 @@ input[type=button].btn-block {
 
 .card-body {
     flex: 1 1 auto;
-    padding: 1.25rem
+    padding: 1.25rem;
+    height: 75vh;
 }
 
 .card-title {
@@ -25707,3 +25709,14 @@ a.fc-more:hover {
     margin-bottom: 30px;
     background-size: 100%
 }
+
+/* .dropdown-menu-right {
+            position: fixed !important;
+            width: 50 !important;
+            z-index: 50 !important;
+            left: 50% !important;
+            top: 50% !important;
+            width: 90% !important;
+            transform: translateY(-50%) !important;
+            min-width: 10px !important;
+        } */

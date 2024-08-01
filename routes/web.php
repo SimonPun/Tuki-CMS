@@ -1,5 +1,7 @@
 <?php
 
+// use App\Http\Controllers\Employee\ActivityColleagueController;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\Admin\AdminController;
@@ -10,9 +12,10 @@ use App\Http\Controllers\Admin\ApplicantsController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\EmployeeActivitiesController;
 use App\Http\Controllers\Employee\DailyActivitiesController;
-use App\Http\Controllers\Employee\Auth\EmployeeSettingsController;
 use App\Http\Controllers\Employee\Auth\EmployeeAuthController;
 use App\Http\Controllers\Employee\EmployeeDashboardController;
+use App\Http\Controllers\Employee\DailyActivityColleagueController;
+use App\Http\Controllers\Employee\Auth\EmployeeSettingsController;
 
 // Admin Login Routes
 Route::prefix('admin')->group(function () {
@@ -23,23 +26,21 @@ Route::prefix('admin')->group(function () {
 
     Route::middleware(['auth:admin'])->group(function () {
         Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout');
-
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
         // Employee Activities Route
         Route::get('employee/{id}/activities', [EmployeeActivitiesController::class, 'show'])->name('admin.employees.activities');
 
-        // Employee Routes
-        Route::prefix('employee')->name('admin.')->group(function () {
-            Route::get('/list', [EmployeeController::class, 'index'])->name('employee.list');
-            Route::get('/add', [EmployeeController::class, 'add'])->name('employee.add');
-            Route::post('/create', [EmployeeController::class, 'create'])->name('employee.create');
-            Route::delete('/delete/{id}', [EmployeeController::class, 'delete'])->name('employee.delete');
-            Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('employee.edit');
-            Route::post('/update', [EmployeeController::class, 'update'])->name('employee.update');
-            Route::get('/show/{id}', [EmployeeController::class, 'show'])->name('employee.show');
-            Route::get('/{id}/work_view', [EmployeeController::class, 'showWork'])->name('employee.work_view'); // Updated method name
-
+        // Employee Management Routes
+        Route::prefix('employee')->name('admin.employee.')->group(function () {
+            Route::get('/list', [EmployeeController::class, 'index'])->name('list');
+            Route::get('/add', [EmployeeController::class, 'add'])->name('add');
+            Route::post('/create', [EmployeeController::class, 'create'])->name('create');
+            Route::delete('/delete/{id}', [EmployeeController::class, 'delete'])->name('delete');
+            Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('edit');
+            Route::post('/update', [EmployeeController::class, 'update'])->name('update');
+            Route::get('/show/{id}', [EmployeeController::class, 'show'])->name('show');
+            Route::get('/{id}/work_view', [EmployeeController::class, 'showWork'])->name('work_view');
         });
 
         // Task Routes
@@ -68,11 +69,11 @@ Route::prefix('admin')->group(function () {
             Route::get('/create', [ApplicantsController::class, 'create'])->name('create');
             Route::post('/store', [ApplicantsController::class, 'store'])->name('store');
             Route::delete('/{id}/delete', [ApplicantsController::class, 'destroy'])->name('destroy');
-            Route::post('/{id}/reply', [ApplicantsController::class, 'reply'])->name('reply'); // Add this line
+            Route::post('/{id}/reply', [ApplicantsController::class, 'reply'])->name('reply');
         });
 
         // Admin CRUD Routes
-        Route::prefix('admin')->name('admin.admin.')->group(function () {
+        Route::prefix('admins')->name('admin.admin.')->group(function () {
             Route::get('/list', [AdminController::class, 'index'])->name('list');
             Route::get('/add', [AdminController::class, 'add'])->name('add');
             Route::post('/store', [AdminController::class, 'store'])->name('store');
@@ -107,8 +108,17 @@ Route::prefix('employee')->group(function () {
         Route::get('dailyactivities/{id}/edit', [DailyActivitiesController::class, 'edit'])->name('dailyactivities.edit');
         Route::put('dailyactivities/{id}', [DailyActivitiesController::class, 'update'])->name('dailyactivities.update');
         Route::delete('dailyactivities/{id}', [DailyActivitiesController::class, 'destroy'])->name('dailyactivities.destroy');
+        // Route::post('dailyactivitiesColleauge/{id}/update', [DailyActivityColleagueController::class, 'updateStatus'])->name('dailyactivitiesColleauge.update');
+        Route::post('dailyactivitiesColleauge/{id}/update', [DailyActivityColleagueController::class, 'updateStatus'])->name('dailyactivitiesColleauge.update');
 
         // Dashboard Route
         Route::get('dashboard', [EmployeeDashboardController::class, 'index'])->name('employee.dashboard');
     });
+    // Employee Routes
+
+    // Show Status Route
+    Route::get('dailyactivities/{id}/status', [DailyActivitiesController::class, 'status'])->name('dailyactivities.status');
+
+    Route::get('/dailyactivities/{id}/action', [DailyActivitiesController::class, 'action'])->name('dailyactivities.action');;
+    Route::get('/dailyactivities/{id}/transfer', [DailyActivitiesController::class, 'showTransferForm'])->name('dailyactivities.transfer');
 });

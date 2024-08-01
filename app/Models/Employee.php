@@ -11,18 +11,20 @@ class Employee extends Authenticatable
     use HasFactory, Notifiable; // Include the Notifiable trait
 
     protected $fillable = [
-        'name', 'email', 'password', 'phone', 'city', 'position', 'start_date', 'image', 'linkedin', 'facebook',
+        'name', 'email', 'phone', 'city', 'position', 'start_date', 'image', 'linkedin', 'facebook',
     ];
-
+    protected $hidden = [
+        'password',
+    ];
     // Relationship with DailyActivity (One-to-Many)
     public function dailyActivities()
     {
-        return $this->hasMany(DailyActivity::class);
+        return $this->hasMany(DailyActivity::class, 'employee_id');
     }
 
     // Relationship with DailyActivity through activity_colleague (Many-to-Many)
-    public function mentionedActivities()
+    public function activities()
     {
-        return $this->belongsToMany(DailyActivity::class, 'activity_colleague');
+        return $this->hasMany(DailyActivity::class, 'employee_id');
     }
 }

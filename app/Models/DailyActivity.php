@@ -1,7 +1,5 @@
 <?php
 
-// app/Models/DailyActivity.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,15 +14,24 @@ class DailyActivity extends Model
         'work_list', 'finished_work', 'remaining_work', 'file'
     ];
 
-    // Relationship with Employee (One-to-Many)
+    /**
+     * Get the employee that created the daily activity.
+     */
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'employee_id');
     }
 
-    // Relationship with Employee through activity_colleague (Many-to-Many)
+    /**
+     * Get the colleagues associated with the daily activity.
+     */
     public function colleagues()
     {
-        return $this->belongsToMany(Employee::class, 'activity_colleague');
+        return $this->belongsToMany(Employee::class, 'activity_colleagues', 'daily_activity_id', 'employee_id');
+    }
+
+    public function activities()
+    {
+        return $this->hasMany(ActivityColleague::class, 'daily_activity_id');
     }
 }

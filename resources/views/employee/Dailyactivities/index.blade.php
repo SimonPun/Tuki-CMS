@@ -9,69 +9,84 @@
                 <div class="card-header bg-primary text-white">
                     <h4 class="mb-0">Daily Activities List</h4>
                 </div>
-
                 <div class="card-body">
-                    @if ($activities->isEmpty())
+                    @if (count($activities) === 0)
+
                         <p class="text-center text-muted">No activities found.</p>
                     @else
                         <div class="table-responsive">
                             <table class="table table-hover table-striped table-bordered">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th>Title</th>
-                                        <th>Check In</th>
-                                        <th>Check Out</th>
-                                        <th>Status</th>
+                                        <th>Project Title</th>
+                                        <th>Created At</th>
+                                        <th>Updated At</th>
                                         <th>Colleagues</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($activities as $activity)
+                                    @foreach ($activities as $activityData)
                                         <tr>
-                                            <td>{{ $activity->title }}</td>
-                                            <td>{{ $activity->check_in }}</td>
-                                            <td>{{ $activity->checkout }}</td>
+                                            <td>{{ $activityData['activity']->title }}</td>
+                                            <td>{{ $activityData['activity']->check_in }}</td>
+                                            <td>{{ $activityData['activity']->checkout }}</td>
                                             <td>
-                                                @if ($activity->work_status == 0)
-                                                    <span class="badge badge-secondary">Not Started</span>
-                                                @elseif ($activity->work_status == 1)
-                                                    <span class="badge badge-warning">In Progress</span>
-                                                @elseif ($activity->work_status == 2)
-                                                    <span class="badge badge-success">Completed</span>
-                                                @elseif ($activity->work_status == 3)
-                                                    <span class="badge badge-danger">Pending</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @forelse ($activity->colleagues as $colleague)
+                                                @foreach ($activityData['colleagues'] as $colleague)
                                                     <div class="badge bg-primary text-white mb-1"
                                                         style="display: block; margin-bottom: 5px; font-size: 0.8rem; padding: 0.2em 0.4em; max-width: 150px;">
-                                                        {{ $colleague->name }}
+                                                        {{ $colleague->employee_name }}
                                                     </div>
-                                                @empty
-                                                    <div class="text-muted">No colleagues</div>
-                                                @endforelse
+                                                @endforeach
                                             </td>
                                             <td>
-                                                <div class="d-flex justify-content-center">
-                                                    <!-- Edit Button -->
-                                                    <a href="{{ route('dailyactivities.edit', $activity->id) }}"
-                                                        class="btn btn-sm btn-primary mr-2">Edit</a>
-
-                                                    <!-- Delete Button -->
-                                                    <form action="{{ route('dailyactivities.destroy', $activity->id) }}"
-                                                        method="POST" class="delete-form" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                                    </form>
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <!-- Dropdown Button for Actions -->
+                                                    <div class="dropdown mr-2">
+                                                        <button class="btn btn-primary dropdown-toggle" type="button"
+                                                            id="dropdownMenuButton" data-toggle="dropdown"
+                                                            aria-haspopup="true" aria-expanded="false">
+                                                            Action
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right"
+                                                            aria-labelledby="dropdownMenuButton">
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('dailyactivities.status', ['id' => $activityData['activity']->id]) }}">
+                                                                View Status
+                                                            </a>
+                                                            <a class="dropdown-item"
+                                                                href="{{ url('/employee/dailyactivities/' . $activityData['activity']->id . '/action') }}">
+                                                                Update Status
+                                                            </a>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('dailyactivities.transfer', $activityData['activity']->id) }}">
+                                                                Transfer Task
+                                                            </a>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('dailyactivities.edit', $activityData['activity']->id) }}">
+                                                                Edit
+                                                            </a>
+                                                            <form
+                                                                action="{{ route('dailyactivities.destroy', $activityData['activity']->id) }}"
+                                                                method="POST" class="d-inline delete-form">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="dropdown-item"
+                                                                    style="color: #dc3545;">Delete</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+
+                            <!-- Pagination Links -->
+                            <div class="pagination-wrapper">
+                                {{ $pagination->links() }}
+                            </div>
                         </div>
                     @endif
                 </div>
@@ -83,18 +98,18 @@
 @section('footer')
     <script>
         $(document).ready(function() {
-            // Optional: You can initialize any additional JavaScript here
-        });
+            $('[data-toggle="tooltip"]').tooltip(); // Initialize tooltips
 
-        $(document).on('submit', '.delete-form', function(e) {
-            e.preventDefault();
+            $(document).on('submit', '.delete-form', function(e) {
+                e.preventDefault();
 
-            const form = this;
-            const isConfirmed = confirm('Are you sure you want to delete this activity?');
+                const form = this;
+                const isConfirmed = confirm('Are you sure you want to delete this activity?');
 
-            if (isConfirmed) {
-                form.submit(); // Proceed with form submission if confirmed
-            }
+                if (isConfirmed) {
+                    form.submit(); // Proceed with form submission if confirmed
+                }
+            });
         });
     </script>
 @endsection

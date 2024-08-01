@@ -37,20 +37,20 @@
 
                                     <!-- Check In Field -->
                                     <div class="form-group col-md-6">
-                                        <label for="check_in" class="form-label">Check In</label>
+                                        <label for="check_in" class="form-label">Created At</label>
                                         <input type="datetime-local" class="form-control" id="check_in" name="check_in"
                                             value="{{ old('check_in', date('Y-m-d\TH:i', strtotime($activity->check_in))) }}">
                                     </div>
 
                                     <!-- Check Out Field -->
                                     <div class="form-group col-md-6">
-                                        <label for="checkout" class="form-label">Check Out</label>
+                                        <label for="checkout" class="form-label">Updated At</label>
                                         <input type="datetime-local" class="form-control" id="checkout" name="checkout"
                                             value="{{ old('checkout', date('Y-m-d\TH:i', strtotime($activity->checkout))) }}">
                                     </div>
 
                                     <!-- Work Status Field -->
-                                    <div class="form-group col-md-6">
+                                    {{-- <div class="form-group col-md-6">
                                         <label for="work_status" class="form-label">Work Status</label>
                                         <select class="form-control" id="work_status" name="work_status">
                                             <option value="0"
@@ -66,7 +66,7 @@
                                                 {{ old('work_status', $activity->work_status) == 3 ? 'selected' : '' }}>
                                                 Pending</option>
                                         </select>
-                                    </div>
+                                    </div> --}}
 
                                     <!-- Work List Field -->
                                     <div class="form-group col-md-12">
