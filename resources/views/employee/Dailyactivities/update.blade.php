@@ -49,43 +49,12 @@
                                             value="{{ old('checkout', date('Y-m-d\TH:i', strtotime($activity->checkout))) }}">
                                     </div>
 
-                                    <!-- Work Status Field -->
-                                    {{-- <div class="form-group col-md-6">
-                                        <label for="work_status" class="form-label">Work Status</label>
-                                        <select class="form-control" id="work_status" name="work_status">
-                                            <option value="0"
-                                                {{ old('work_status', $activity->work_status) == 0 ? 'selected' : '' }}>Not
-                                                Started</option>
-                                            <option value="1"
-                                                {{ old('work_status', $activity->work_status) == 1 ? 'selected' : '' }}>In
-                                                Progress</option>
-                                            <option value="2"
-                                                {{ old('work_status', $activity->work_status) == 2 ? 'selected' : '' }}>
-                                                Finished</option>
-                                            <option value="3"
-                                                {{ old('work_status', $activity->work_status) == 3 ? 'selected' : '' }}>
-                                                Pending</option>
-                                        </select>
-                                    </div> --}}
+
 
                                     <!-- Work List Field -->
                                     <div class="form-group col-md-12">
                                         <label for="work_list" class="form-label">Work List</label>
                                         <textarea class="form-control" id="work_list" name="work_list" rows="4" placeholder="Describe the work list">{{ old('work_list', $activity->work_list) }}</textarea>
-                                    </div>
-
-                                    <!-- Finished Work Field -->
-                                    <div class="form-group col-md-12">
-                                        <label for="finished_work" class="form-label">Finished Work</label>
-                                        <textarea class="form-control" id="finished_work" name="finished_work" rows="4"
-                                            placeholder="Describe the finished work">{{ old('finished_work', $activity->finished_work) }}</textarea>
-                                    </div>
-
-                                    <!-- Remaining Work Field -->
-                                    <div class="form-group col-md-12">
-                                        <label for="remaining_work" class="form-label">Remaining Work</label>
-                                        <textarea class="form-control" id="remaining_work" name="remaining_work" rows="4"
-                                            placeholder="Describe the remaining work">{{ old('remaining_work', $activity->remaining_work) }}</textarea>
                                     </div>
 
                                     <!-- Colleagues Field -->

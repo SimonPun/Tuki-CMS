@@ -84,7 +84,8 @@ Route::prefix('admin')->group(function () {
     });
 });
 
-// Employee Login Routes
+
+
 Route::prefix('employee')->group(function () {
     Route::get('login', [EmployeeAuthController::class, 'showLoginForm'])->name('employee.login');
     Route::post('login', [EmployeeAuthController::class, 'login']);
@@ -108,17 +109,27 @@ Route::prefix('employee')->group(function () {
         Route::get('dailyactivities/{id}/edit', [DailyActivitiesController::class, 'edit'])->name('dailyactivities.edit');
         Route::put('dailyactivities/{id}', [DailyActivitiesController::class, 'update'])->name('dailyactivities.update');
         Route::delete('dailyactivities/{id}', [DailyActivitiesController::class, 'destroy'])->name('dailyactivities.destroy');
-        // Route::post('dailyactivitiesColleauge/{id}/update', [DailyActivityColleagueController::class, 'updateStatus'])->name('dailyactivitiesColleauge.update');
         Route::post('dailyactivitiesColleauge/{id}/update', [DailyActivityColleagueController::class, 'updateStatus'])->name('dailyactivitiesColleauge.update');
 
         // Dashboard Route
         Route::get('dashboard', [EmployeeDashboardController::class, 'index'])->name('employee.dashboard');
+
+        // Additional Routes
+        Route::get('dailyactivities/{id}/status', [DailyActivitiesController::class, 'status'])->name('dailyactivities.status');
+        Route::get('dailyactivities/{id}/action', [DailyActivitiesController::class, 'action'])->name('dailyactivities.action');
+        Route::get('dailyactivities/{id}/transfer', [DailyActivitiesController::class, 'showTransferForm'])->name('dailyactivities.transfer');
+        Route::put('dailyactivities/{id}/transfer', [DailyActivitiesController::class, 'transfer'])->name('task.transfer');
+        // routes/web.php
+        Route::get('dailyactivities/{id}/update-work', [DailyActivitiesController::class, 'updateWorkForm'])->name('dailyactivities.worklist');
+
+        Route::post('dailyactivities/uploadwork', [DailyActivitiesController::class, 'storework'])->name('dailyactivities.store.worklist');
+
+
+        Route::get('/dailyactivities/{id}/show', [DailyActivitiesController::class, 'showworklist'])->name('dailyactivities.show');
+
+        // Edit the showwork list
+        Route::get('/dailyactivities/{id}/edit', [DailyActivitiesController::class, 'editworklist'])->name('dailyactivities.edit');
+
+        // routes/web.php
     });
-    // Employee Routes
-
-    // Show Status Route
-    Route::get('dailyactivities/{id}/status', [DailyActivitiesController::class, 'status'])->name('dailyactivities.status');
-
-    Route::get('/dailyactivities/{id}/action', [DailyActivitiesController::class, 'action'])->name('dailyactivities.action');;
-    Route::get('/dailyactivities/{id}/transfer', [DailyActivitiesController::class, 'showTransferForm'])->name('dailyactivities.transfer');
 });

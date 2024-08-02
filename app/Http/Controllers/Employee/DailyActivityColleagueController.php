@@ -5,30 +5,21 @@ namespace App\Http\Controllers\Employee;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ActivityColleague;
-use App\Models\DailyActivity;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class DailyActivityColleagueController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         // Render the view with the form to submit new activity status
         return view('employee.Dailyactivities.create'); // Adjust path as needed
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -38,8 +29,7 @@ class DailyActivityColleagueController extends Controller
             'remarks' => 'nullable|string|max:255',
         ]);
 
-        // Set a default status if not provided
-        $status = $validated['work_status'] ?? 0; // Default to 'Not Started'
+        $status = $validated['work_status'] ?? 0;
 
         ActivityColleague::updateOrCreate(
             [
@@ -55,43 +45,24 @@ class DailyActivityColleagueController extends Controller
         return redirect()->back()->with('success', 'Activity added successfully.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function updateStatus(Request $request, $id)
     {
-
-        // return $request->all();
-
-
-
         $validated = $request->validate([
             'remarks' => 'nullable|string|max:255',
             'work_status' => 'required|integer|in:0,1,2,3',
         ]);
 
-        // Find the record in the activity_colleagues table
         $activityColleague = ActivityColleague::where('daily_activity_id', $id)
             ->where('employee_id', Auth::id())
             ->first();
-
-
-
 
         if ($activityColleague) {
             $activityColleague->update([
                 'remarks' => $validated['remarks'],
                 'work_status' => $validated['work_status'],
             ]);
-        } else {
-            return redirect()->back()->with('error', 'Activity not found or access denied.');
+
+            return redirect()->back()->with('success', 'Activity status updated successfully.');
         }
-
-
-        return redirect()->to('/employee/dailyactivities')->with('success', 'Status updated successfully.');
     }
 }

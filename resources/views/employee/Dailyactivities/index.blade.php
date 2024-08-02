@@ -62,9 +62,16 @@
                                                                 href="{{ route('dailyactivities.transfer', $activityData['activity']->id) }}">
                                                                 Transfer Task
                                                             </a>
+                                                            <a class="dropdown-item" href="">
+                                                                Canecl Task
+                                                            </a>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('dailyactivities.show', $activityData['activity']->id) }}">
+                                                                Add Work List
+                                                            </a>
                                                             <a class="dropdown-item"
                                                                 href="{{ route('dailyactivities.edit', $activityData['activity']->id) }}">
-                                                                Edit
+                                                                Edit Task
                                                             </a>
                                                             <form
                                                                 action="{{ route('dailyactivities.destroy', $activityData['activity']->id) }}"
@@ -72,7 +79,7 @@
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" class="dropdown-item"
-                                                                    style="color: #dc3545;">Delete</button>
+                                                                    style="color: #dc3545;">Delete Task</button>
                                                             </form>
                                                         </div>
                                                     </div>

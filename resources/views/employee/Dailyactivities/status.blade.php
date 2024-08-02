@@ -18,7 +18,7 @@
                                 @endif
                             </h3>
                             <a href="/employee/dailyactivities" class="btn btn-primary btn-sm ">
-                                <i class="bi bi-arrow-left"></i> Back to Employee List
+                                <i class="bi bi-arrow-left"></i> Back to Activity List
                             </a>
                         </div>
                         <div class="card-body">

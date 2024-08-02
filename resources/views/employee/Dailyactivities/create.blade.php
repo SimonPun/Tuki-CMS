@@ -63,40 +63,6 @@
                                     </div>
 
                                     <div class="form-group col-md-6">
-                                        <label for="file">Upload File (Optional)</label>
-                                        <input id="file" type="file"
-                                            class="form-control-file @error('file') is-invalid @enderror" name="file">
-                                        @error('file')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    {{-- <div class="form-group col-md-6">
-                                        <label for="work_status">Work Status</label>
-                                        <select id="work_status"
-                                            class="form-control @error('work_status') is-invalid @enderror"
-                                            name="work_status">
-                                            <option value="0" {{ old('work_status') == '0' ? 'selected' : '' }}>Not
-                                                Started</option>
-                                            <option value="1" {{ old('work_status') == '1' ? 'selected' : '' }}>In
-                                                Progress</option>
-                                            <option value="2" {{ old('work_status') == '2' ? 'selected' : '' }}>
-                                                Completed</option>
-                                            <option value="3" {{ old('work_status') == '3 ' ? 'selected' : '' }}>
-                                                Pending</option>
-                                        </select>
-                                        @error('work_status')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div> --}}
-
-                                    <div class="form-group col-md-6">
                                         <label for="colleagues">Colleagues</label>
                                         <select id="colleagues" name="colleagues[]" class="form-control" multiple>
                                             @foreach ($employees as $employee)
@@ -109,10 +75,10 @@
                                             </span>
                                         @enderror
                                     </div>
-                                </div>
 
+                                </div>
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-12">
                                         <label for="work_list">Work List</label>
                                         <textarea id="work_list" class="form-control @error('work_list') is-invalid @enderror" name="work_list">{{ old('work_list') }}</textarea>
                                         @error('work_list')
@@ -122,37 +88,31 @@
                                         @enderror
                                     </div>
 
-                                    <div class="form-group col-md-6">
-                                        <label for="finished_work">Finished Work</label>
-                                        <textarea id="finished_work" class="form-control @error('finished_work') is-invalid @enderror" name="finished_work">{{ old('finished_work') }}</textarea>
-                                        @error('finished_work')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
+
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="file">Upload File (Optional)</label>
+                                    <input id="file" type="file"
+                                        class="form-control-file @error('file') is-invalid @enderror" name="file">
+                                    @error('file')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
 
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label for="remaining_work">Remaining Work</label>
-                                        <textarea id="remaining_work" class="form-control @error('remaining_work') is-invalid @enderror" name="remaining_work">{{ old('remaining_work') }}</textarea>
-                                        @error('remaining_work')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="form-group text-center mb-0">
-                                    <button type="submit" class="btn btn-primary btn-block">Add Daily Activity</button>
-                                </div>
-                            </form>
                         </div>
+
+
+
+                        <div class="form-group text-center mb-0">
+                            <button type="submit" class="btn btn-primary btn-block">Add Daily Activity</button>
+                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection

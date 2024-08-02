@@ -184,17 +184,12 @@
                 height: 100
             });
 
-            $('#finished_work').summernote({
-                placeholder: 'Enter finished work details',
+            $('#updated_work').summernote({
+                placeholder: 'Enter work list details',
                 tabsize: 2,
-                height: 100
+                height: 200
             });
 
-            $('#remaining_work').summernote({
-                placeholder: 'Enter remaining work details',
-                tabsize: 2,
-                height: 100
-            });
         });
     </script>
 </body>

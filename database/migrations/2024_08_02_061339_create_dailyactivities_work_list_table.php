@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        schema::create('activity_colleagues', function (Blueprint $table) {
+        Schema::create('dailyactivities_work_list', function (Blueprint $table) {
             $table->id();
             $table->foreignId('daily_activity_id')->constrained('daily_activities')->onDelete('cascade');
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->integer('work_status')->default(0);
-            $table->text('remarks')->nullable();
+            $table->string('Updated_Work');
             $table->integer('cancel')->default(0);
             $table->timestamps();
         });
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('activity_colleagues');
+        Schema::dropIfExists('dailyactivities_work_list');
     }
 };

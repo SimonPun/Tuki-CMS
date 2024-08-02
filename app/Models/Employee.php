@@ -27,4 +27,8 @@ class Employee extends Authenticatable
     {
         return $this->hasMany(DailyActivity::class, 'employee_id');
     }
+    public function workLists()
+    {
+        return $this->hasMany(DailyActivityWorkList::class, 'employee_id');
+    }
 }

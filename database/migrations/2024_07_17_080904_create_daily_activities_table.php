@@ -17,8 +17,6 @@ class CreateDailyActivitiesTable extends Migration
             $table->string('colleague_id')->nullable();
             $table->string('work_status')->nullable()->default('0');
             $table->text('work_list')->nullable();
-            $table->text('finished_work')->nullable();
-            $table->text('remaining_work')->nullable();
             $table->string('file')->nullable();
             $table->timestamps();
 

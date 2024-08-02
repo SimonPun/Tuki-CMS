@@ -34,4 +34,9 @@ class DailyActivity extends Model
     {
         return $this->hasMany(ActivityColleague::class, 'daily_activity_id');
     }
+
+    public function workLists()
+    {
+        return $this->hasMany(DailyActivityWorkList::class, 'daily_activity_id');
+    }
 }
