@@ -25,7 +25,11 @@ class Employee extends Authenticatable
     // Relationship with DailyActivity through activity_colleague (Many-to-Many)
     public function activities()
     {
-        return $this->hasMany(DailyActivity::class, 'employee_id');
+        return $this->hasMany(DailyActivity::class, 'employee_id', 'employee_id', 'daily_activity_id');
+    }
+    public function mentionedActivities()
+    {
+        return $this->belongsToMany(DailyActivity::class, 'activity_colleagues', 'employee_id', 'daily_activity_id');
     }
     public function workLists()
     {

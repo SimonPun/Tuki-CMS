@@ -10,10 +10,11 @@ class EmployeeActivitiesController extends Controller
 {
     public function show($id): View
     {
-        // Fetch the employee with their daily activities and colleagues, as well as activities they are mentioned in
+        // Fetch the employee with their daily activities and colleagues
+        // Also, fetch the activities in which the employee is mentioned
         $employee = Employee::with([
             'dailyActivities.colleagues', // Load daily activities with associated colleagues
-            'activities' => function ($query) { // Load activities the employee is mentioned in
+            'mentionedActivities' => function ($query) { // Load activities the employee is mentioned in
                 $query->with('colleagues'); // Load colleagues associated with those activities
             }
         ])->findOrFail($id);

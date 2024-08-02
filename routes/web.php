@@ -130,6 +130,8 @@ Route::prefix('employee')->group(function () {
         // Edit the showwork list
         Route::get('/dailyactivities/{id}/edit', [DailyActivitiesController::class, 'editworklist'])->name('dailyactivities.edit');
 
+        Route::get('/dailyactivities/{id}/update', [DailyActivitiesController::class, 'updateworklist'])->name('dailyactivities.update');
+
         // routes/web.php
     });
 });
