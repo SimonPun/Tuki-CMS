@@ -203,7 +203,7 @@ class DailyActivitiesController extends Controller
         $dailyActivity->work_status = $request->input('work_status');
         // $dailyActivity->work_list = $request->input('work_list');
         // $dailyActivity->finished_work = $request->input('finished_work');
-        $dailyActivity->remaining_work = $request->input('remaining_work');
+        // $dailyActivity->remaining_work = $request->input('remaining_work');
 
         if ($request->hasFile('file')) {
             // Delete old file if exists
@@ -429,7 +429,10 @@ class DailyActivitiesController extends Controller
     public function showworklist($id)
     {
         $dailyActivity = DailyActivity::findOrFail($id);
-        $worklist = DailyActivityWorkList::where('daily_activity_id', $id)->where('cancel', '0')->where('daily_activity_id', $id)->get();
+        $worklist = DailyActivityWorkList::where('daily_activity_id', $id)
+            ->where('cancel', '0')
+            ->where('daily_activity_id', $id)
+            ->get();
 
 
 
@@ -440,8 +443,9 @@ class DailyActivitiesController extends Controller
 
     public function editworklist($id)
     {
-        $activity = DailyActivity::findOrFail($id);
-        return view('employee.Dailyactivities.editworknote', compact('activity'));
+        $workitem = DailyActivityWorkList::findOrFail($id);
+
+        return view('employee.Dailyactivities.editworknote', compact('workitem'));
     }
 
 
@@ -451,9 +455,10 @@ class DailyActivitiesController extends Controller
             'updated_work' => 'required|string',
 
         ]);
-        $activity = DailyActivity::findOrFail($id);
-        $activity->Updated_Work = $request->input('updated_work');
-        $activity->save();
+        $workitem = DailyActivityWorkList::findOrFail($id);
+        $workitem->Updated_Work = $request->Updated_Work;
+        $workitem->save();
+
 
 
         return redirect()->route('employee.dailyactivities.index')->with('success', 'Work list updated successfully!');

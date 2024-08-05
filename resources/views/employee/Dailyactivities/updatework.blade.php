@@ -10,9 +10,12 @@
                     <div class="card">
                         <div class="card-header bg-primary text-white">
                             <h4 class="mb-0">Update Work List</h4>
+                            <a href="{{ route('dailyactivities.show', $activity->id) }}" class="btn btn-primary btn-sm">
+                                <i class="bi bi-arrow-left"></i> View Work List
+                            </a>
                         </div>
 
-                        <div class="card-body p-3">
+                        <div class="card-bodys p-3">
                             <form action="{{ route('dailyactivities.store.worklist') }}" method="POST">
                                 @csrf
 

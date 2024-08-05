@@ -10,15 +10,15 @@ class EmployeeActivitiesController extends Controller
 {
     public function show($id): View
     {
-        // Fetch the employee with their daily activities and colleagues
-        // Also, fetch the activities in which the employee is mentioned
+        // Fetch the employee with their daily activities and mentioned activities
         $employee = Employee::with([
             'dailyActivities.colleagues', // Load daily activities with associated colleagues
-            'mentionedActivities' => function ($query) { // Load activities the employee is mentioned in
-                $query->with('colleagues'); // Load colleagues associated with those activities
-            }
+            'mentionedActivities.colleagues' // Load mentioned activities with associated colleagues
         ])->findOrFail($id);
 
-        return view('admin.employees.activities', compact('employee'));
+        // Combine dailyActivities and mentionedActivities while removing duplicates
+        $allActivities = $employee->dailyActivities->merge($employee->mentionedActivities)->unique('id');
+
+        return view('admin.employees.activities', compact('employee', 'allActivities'));
     }
 }

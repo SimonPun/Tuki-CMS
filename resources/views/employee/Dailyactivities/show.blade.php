@@ -10,9 +10,7 @@
                     <div class="card">
                         <div class="card-header bg-white text-black">
                             <h4 class="mb-0">Daily Activity Details</h4>
-                            <a href="/employee/dailyactivities" class="btn btn-primary btn-sm">
-                                <i class="bi bi-arrow-left"></i> Back to Activity List
-                            </a>
+
                         </div>
 
                         <div class="card-bodys p-3">
@@ -29,10 +27,11 @@
                                         <tr>
                                             <td>
                                                 {{ $i }}. {{ $item->Updated_Work }}
-                                                <a href="{{ route('dailyactivities.edit', $item->id) }}"
+                                                <a href="{{ route('dailyactivitieslist.edit', $item->id) }}"
                                                     class="btn btn-primary btn-sm float-right">
                                                     <i class="bi bi-pencil"></i> Edit
                                                 </a>
+
                                             </td>
                                         </tr>
                                     @endforeach

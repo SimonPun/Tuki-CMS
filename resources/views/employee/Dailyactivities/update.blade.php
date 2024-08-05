@@ -6,81 +6,107 @@
     <div class="app-main__outer">
         <div class="app-main__inner">
             <div class="row justify-content-center">
-                <div class="col-md-10">
-                    <div class="card shadow-sm">
+                <div class="col-md-8">
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    <div class="card">
                         <div class="card-header bg-primary text-white">
                             <h4 class="mb-0">Update Daily Activity</h4>
                         </div>
-                        <div class="card-body">
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul class="mb-0">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
 
+                        <div class="card-body">
                             <form method="POST" action="{{ route('dailyactivities.update', $activity->id) }}"
                                 enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
+                                <input type="hidden" name="employee_id" value="{{ Auth::guard('employee')->user()->id }}">
 
                                 <div class="form-row">
-                                    <!-- Title Field -->
                                     <div class="form-group col-md-6">
-                                        <label for="title" class="form-label">Title</label>
-                                        <input type="text" class="form-control" id="title" name="title"
-                                            placeholder="Enter activity title" value="{{ old('title', $activity->title) }}">
+                                        <label for="title">Title</label>
+                                        <input id="title" type="text"
+                                            class="form-control @error('title') is-invalid @enderror" name="title"
+                                            value="{{ old('title', $activity->title) }}" autofocus>
+                                        @error('title')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
 
-                                    <!-- Check In Field -->
                                     <div class="form-group col-md-6">
-                                        <label for="check_in" class="form-label">Created At</label>
-                                        <input type="datetime-local" class="form-control" id="check_in" name="check_in"
-                                            value="{{ old('check_in', date('Y-m-d\TH:i', strtotime($activity->check_in))) }}">
+                                        <label for="check_in">Created At</label>
+                                        <input id="check_in" type="date"
+                                            class="form-control @error('check_in') is-invalid @enderror" name="check_in"
+                                            value="{{ old('check_in', $activity->check_in) }}">
+                                        @error('check_in')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
+                                </div>
 
-                                    <!-- Check Out Field -->
+                                <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="checkout" class="form-label">Updated At</label>
-                                        <input type="datetime-local" class="form-control" id="checkout" name="checkout"
-                                            value="{{ old('checkout', date('Y-m-d\TH:i', strtotime($activity->checkout))) }}">
+                                        <label for="checkout">Updated At</label>
+                                        <input id="checkout" type="date"
+                                            class="form-control @error('checkout') is-invalid @enderror" name="checkout"
+                                            value="{{ old('checkout', $activity->checkout) }}">
+                                        @error('checkout')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
 
-
-
-                                    <!-- Work List Field -->
-                                    <div class="form-group col-md-12">
-                                        <label for="work_list" class="form-label">Work List</label>
-                                        <textarea class="form-control" id="work_list" name="work_list" rows="4" placeholder="Describe the work list">{{ old('work_list', $activity->work_list) }}</textarea>
-                                    </div>
-
-                                    <!-- Colleagues Field -->
-                                    <div class="form-group col-md-12">
-                                        <label for="colleagues" class="form-label">Colleagues</label>
-                                        <select class="form-control" id="colleagues" name="colleagues[]" multiple>
+                                    <div class="form-group col-md-6">
+                                        <label for="colleagues">Colleagues</label>
+                                        <select id="colleagues" name="colleagues[]" class="form-control" multiple>
                                             @foreach ($employees as $employee)
                                                 <option value="{{ $employee->id }}"
-                                                    {{ in_array($employee->id, old('colleagues', $activity->colleagues->pluck('id')->toArray())) ? 'selected' : '' }}>
+                                                    {{ in_array($employee->id, $selectedColleagues) ? 'selected' : '' }}>
                                                     {{ $employee->name }}
                                                 </option>
                                             @endforeach
                                         </select>
+                                        @error('colleagues')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
+                                </div>
 
-                                    <!-- File Upload Field -->
+                                <div class="form-row">
                                     <div class="form-group col-md-12">
-                                        <label for="file" class="form-label">File (Optional)</label>
-                                        <input type="file" class="form-control-file" id="file" name="file">
+                                        <label for="work_list">Work List</label>
+                                        <textarea id="work_list" class="form-control @error('work_list') is-invalid @enderror" name="work_list">{{ old('work_list', $activity->work_list) }}</textarea>
+                                        @error('work_list')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
+                                </div>
 
-                                    <!-- Form Buttons -->
-                                    <div class="form-group col-md-12 d-flex justify-content-between">
-                                        <button type="submit" class="btn btn-primary">Update Activity</button>
-                                        <a href="{{ route('dailyactivities.index') }}" class="btn btn-secondary">Cancel</a>
-                                    </div>
+                                <div class="form-group col-md-6">
+                                    <label for="file">Upload File (Optional)</label>
+                                    <input id="file" type="file"
+                                        class="form-control-file @error('file') is-invalid @enderror" name="file">
+                                    @error('file')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group text-center mb-0">
+                                    <button type="submit" class="btn btn-primary btn-block">Update Daily Activity</button>
                                 </div>
                             </form>
                         </div>

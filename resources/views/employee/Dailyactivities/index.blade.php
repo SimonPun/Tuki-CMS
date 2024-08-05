@@ -66,7 +66,7 @@
                                                                 Canecl Task
                                                             </a>
                                                             <a class="dropdown-item"
-                                                                href="{{ route('dailyactivities.show', $activityData['activity']->id) }}">
+                                                                href="{{ route('dailyactivities.worklist', $activityData['activity']->id) }}">
                                                                 Add Work List
                                                             </a>
                                                             <a class="dropdown-item"

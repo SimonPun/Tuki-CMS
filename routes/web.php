@@ -128,9 +128,9 @@ Route::prefix('employee')->group(function () {
         Route::get('/dailyactivities/{id}/show', [DailyActivitiesController::class, 'showworklist'])->name('dailyactivities.show');
 
         // Edit the showwork list
-        Route::get('/dailyactivities/{id}/edit', [DailyActivitiesController::class, 'editworklist'])->name('dailyactivities.edit');
+        Route::get('/dailyactivities/shows/{id}/edit', [DailyActivitiesController::class, 'editworklist'])->name('dailyactivitieslist.edit');
 
-        Route::get('/dailyactivities/{id}/update', [DailyActivitiesController::class, 'updateworklist'])->name('dailyactivities.update');
+        Route::get('/dailyactivities/shows/{id}/update', [DailyActivitiesController::class, 'updateworklist'])->name('dailyactivitieslist.update');
 
         // routes/web.php
     });
